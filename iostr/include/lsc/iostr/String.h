@@ -61,7 +61,7 @@ class IOSTR_LIB String
         { return mPos != string::npos; }
     }; // struct String::Format
     
-    
+public:
     String() = default;
     String(const char* aStr);
     String(string aStr);
