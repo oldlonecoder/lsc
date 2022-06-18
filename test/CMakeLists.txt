@@ -54,8 +54,8 @@ enable_testing()
 
 
 include(CTest)
-add_test(NAME String COMMAND $<TARGET_FILE:Test.app> Dummy1 "(*.*)")
+add_test(NAME String:Ctors-Dtor COMMAND $<TARGET_FILE:Test.app> --name "String-Ctors-Dtor" "(*.*)")
 
 add_custom_command(TARGET Test.app
                    POST_BUILD
-                   COMMAND ctest -C $<CONFIGURATION>  )
+                   COMMAND ctest -C $<CONFIGURATION> -V )

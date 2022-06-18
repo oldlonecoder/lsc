@@ -70,6 +70,8 @@ public:
     
     ~String();
     
+    string operator()() { return _mData; }
+    
 };
 
 } // Lsc

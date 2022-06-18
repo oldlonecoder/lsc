@@ -11,8 +11,11 @@ Lsc::Test::Test(int argc, char **argv):argc(argc), argv(argv)
 
 int Lsc::Test::exec()
 {
-    std::cout << "arg count: " << argc << "...\n";
+    std::cout << argv[0] << " ==> arg count: " << argc << "...\n";
+    String Str = argv[1] ;
+    std::cout << "argv[1]:" << Str() << '\n';
+    //...
     for(int i{1}; i<argc; i++)
-        std::cout << "\033[38;5;118mArg #\033[38;5;255m" << i+1 << "\033[38;5;0m: \"" << argv[i] << "\"\n";
+        std::cout << "\033[38;5;118mArg #\033[38;5;255m" << i << "\033[38;5;255m: \33[38;5;98m\"" << argv[i] << "\"\033[0m\n";
     return 0;
 }
