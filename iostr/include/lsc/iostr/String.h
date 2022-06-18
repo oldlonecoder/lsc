@@ -6,7 +6,7 @@
 
 #include <lsc/iostr/dlexport.h>
 
-#include <strstream>
+#include <iostream>
 #include <cstring>
 #include <sstream>
 #include <iomanip>
@@ -654,8 +654,8 @@ public:
     /*!
         Important: renommer begin et end &agrave; cbegin et cend pour std::string::const_iterator !!
     */
-    std::string::iterator Begin() { return _d.begin(); }
-    std::string::iterator End() { return _d.end(); }
+    std::string::iterator Begin() { return _mData.begin(); }
+    std::string::iterator End() { return _mData.end(); }
     // --------------------------
 private:
     int PushWord(Word::List & strm, Word & w, std::string::size_type sz);
