@@ -1,7 +1,7 @@
 # lsc
 my personal c++ utils (Framework)
 
-Set of small and medium-size librararies I write for not using third-party c++ utilities expected the (GNU)libstdc++ 
+Set of small and medium-size libraries I write for not using third-party c++ utilities, excepted the (GNU)libstdc++ 
 
 // Coding Style ( May change during R&D ) 
 ------------
