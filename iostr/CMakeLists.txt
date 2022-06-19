@@ -16,7 +16,7 @@ add_library(
         SHARED
         include/${FrameWorkName}/${PROJECT_NAME}/String.h
         src/String.cc
-)
+        include/lsc/iostr/CArguments.h src/CString.cc include/lsc/iostr/CString.h)
 
 
 

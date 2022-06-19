@@ -8,5 +8,5 @@
 int main(int argc, char** argv)
 {
     Lsc::Test Test(argc,argv);
-    return Test.exec();
+    return Test.execute();
 }

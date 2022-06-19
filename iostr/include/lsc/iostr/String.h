@@ -25,6 +25,7 @@ namespace Lsc
 {
 
 using std::string;
+using std::string_view;
 
 struct IOSTR_LIB Color
 {
@@ -301,18 +302,15 @@ struct IOSTR_LIB Color
     static string Rgb(Color::Type aColorName);
 };
 
-
 struct IOSTR_LIB ColorData
 {
     Color::Type _enum;
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    [[nodiscard]] std::string ToString() const ;
+    uint8_t     r;
+    uint8_t     g;
+    uint8_t     b;
+    [[nodiscard]] std::string ToString() const;
     //uint32_t rgb() const;
 };
-
-
 
 
 
@@ -320,8 +318,8 @@ class IOSTR_LIB String
 {
     string                         _mData;
     static string                  _msNull;
-    [[maybe_unused]] static string _msDefaultTokenSeparators;
     
+    friend class CString;
     /*!
      * @brief Format the string
      *
@@ -329,7 +327,7 @@ class IOSTR_LIB String
      */
     struct __attribute__ ((visibility ("hidden")))  Format final
     {
-        string &mString;
+        string            &mString;
         string            mArgStr;
         string::size_type mPos = string::npos;
         
@@ -348,27 +346,27 @@ class IOSTR_LIB String
         explicit operator bool() const
         { return mPos != string::npos; }
     }; // struct String::Format
-    
+
 public:
     struct IOSTR_LIB Word
     {
         std::string::const_iterator mStart;
         std::string::const_iterator mE;
         std::string::const_iterator mSE;
-
+        
         std::string operator()();
         std::string operator*();
-
+        
         using List = std::vector<String::Word>;
         using Iterator = List::iterator;
         [[maybe_unused]] std::string Mark() const;
-
-        int mLine = 1;
-        int mCol = 1;
+        
+        int         mLine     = 1;
+        int         mCol      = 1;
         std::size_t mPosition = 0;
         void operator++();
         void operator++(int);
-
+        
         std::string Location();
     };
 
@@ -378,84 +376,85 @@ private:
         std::string::const_iterator mStart;
         std::string::const_iterator mPos;
         std::string::const_iterator mStop; /// ...
-
-        int         mLine = 1;
-        int         mCol = 1;
-        uint64_t    mIndex = 0;
-
+        
+        int      mLine  = 1;
+        int      mCol   = 1;
+        uint64_t mIndex = 0;
+        
         SPS() = default;
         ~SPS() = default;
-
-        SPS(const std::string& Str);
+        
+        SPS(const std::string &Str);
         bool Skip();
         bool End();
         bool operator++();
         bool operator++(int);
-        void Reset(const std::string& _str)
+        void Reset(const std::string &_str)
         {
-            mPos = mStart = _str.cbegin();
-            mLine = mCol = 1;
+            mPos   = mStart = _str.cbegin();
+            mLine  = mCol   = 1;
             mIndex = 0;
-            mStop = _str.cend();
+            mStop  = _str.cend();
         }
-        SPS& operator>>(String::Word& W);
+        SPS &operator>>(String::Word &W);
         //BCE& operator = (const Word& w);
     } _mCursor;
-    
+
 public:
     using List = std::vector<std::string>;
     
     String() = default;
-    String(const char* aStr);
+    String(const char *aStr);
     String(string aStr);
     String(std::string_view aStr);
-    String(const String& aStr);
+    String(const String &aStr);
     
     ~String();
     
-    string operator()() { return _mData; }
+    string operator()()
+    { return _mData; }
     
-    String& operator=(String&& aStr) noexcept
+    String &operator=(String &&aStr) noexcept
     {
         _mData = std::move(aStr._mData);
         return *this;
     }
     
-    String& operator=(const String& aStr)
+    String &operator=(const String &aStr)
     {
         _mData = aStr._mData;
         return *this;
     }
     
-    String& operator=(const string& aStr)
+    String &operator=(const string &aStr)
     {
         _mData = aStr;
         return *this;
     }
     
-    String& operator=(const char* aStr)
+    String &operator=(const char *aStr)
     {
         _mData = aStr;
         return *this;
     }
     
-    String& operator+=(const String & aStr);
-    String& operator+=(const std::string & aStr);
-    String& operator+=(char c);
-
-    String& operator+(const String & aStr);
-    String& operator+(const std::string & aStr);
-    String& operator+(char c);
-
-    template<typename T> String& operator+=(const T & a)
+    String &operator+=(const String &aStr);
+    String &operator+=(const std::string &aStr);
+    String &operator+=(char c);
+    
+    String &operator+(const String &aStr);
+    String &operator+(const std::string &aStr);
+    String &operator+(char c);
+    
+    template<typename T> String &operator+=(const T &a)
     {
         std::ostringstream os;
         os << a;
         _mData.append(os.str());
         return *this;
     }
-
-    template<typename T> String& operator+(const T & a)
+    
+    template<typename T> String &operator+(const T &a)
     {
         std::ostringstream os;
         
@@ -463,9 +462,9 @@ public:
         _mData.append(os.str());
         return *this;
     }
-
-    bool operator==(const String & aStr) const;
-
+    
+    bool operator==(const String &aStr) const;
+    
     bool Empty() const
     {
         return _mData.empty();
@@ -481,7 +480,7 @@ public:
         return _mData;
     }
     
-    std::string& Str()
+    std::string &Str()
     {
         return _mData;
     }
@@ -490,47 +489,45 @@ public:
     {
         return _mData;
     }
-
+    
     // -- on peut maintenant commencer nos routines de manipulations et de traitements....
-    static String::List StdList(int argc, char** argv);
-    String& operator<<(const String & aStr);
-    String& operator<<(const char* aStr);
-    String& operator<<(const std::string & aStr);
-    String& operator<<(char c);
-    String& operator<<(Color::Type c);
+    static String::List StdList(int argc, char **argv);
+    String &operator<<(const String &aStr);
+    String &operator<<(const char *aStr);
+    String &operator<<(const std::string &aStr);
+    String &operator<<(char c);
+    String &operator<<(Color::Type c);
     
-
-    bool SkipWS(std::string::iterator & pos);
-    static bool SkipWS(const char* pos);
-    String& operator>>(std::string & _arg);
-    static std::string MakeStr(const char* B, const char* E);
+    bool SkipWS(std::string::iterator &pos);
+    static bool SkipWS(const char *pos);
+    String &operator>>(std::string &_arg);
+    static std::string MakeStr(const char *B, const char *E);
     
-    char* Dup() const
+    char *Dup() const
     {
         return strdup(_mData.c_str());
     }
-
-
-    const char* c_str()
+    
+    const char *c_str()
     {
         return _mData.c_str();
     }
-
-//    struct TEACC_CORE_DLL rect_xy
-//    {
-//        int x = -1;
-//        int y = -1;
-//    };
-//
-//
-
+    
+    //    struct TEACC_CORE_DLL rect_xy
+    //    {
+    //        int x = -1;
+    //        int y = -1;
+    //    };
+    //
+    //
+    
     void Clear();
-
+    
     //virtual const std::string& tea_id() { return "iostr";}
-
-    static std::string DateTime(const std::string & str_fmt);
-
-    template<typename t> String& operator=(const t & _a)
+    
+    static std::string DateTime(const std::string &str_fmt);
+    
+    template<typename t> String &operator=(const t &_a)
     {
         std::ostringstream os;
         os << _a;
@@ -538,53 +535,44 @@ public:
         _mData = os.str();
         return *this;
     }
-    std::string ExtractSurrounded(const std::string & first_lhs, const std::string & first_rhs);
+    std::string ExtractSurrounded(const std::string &first_lhs, const std::string &first_rhs);
     [[nodiscard]] std::string::const_iterator ScanTo(std::string::const_iterator start, char c) const;
-    const char* ScanTo(const char* start, char c) const;
+    const char *ScanTo(const char *start, char c) const;
     
     [[nodiscard]] size_t Length() const
     {
         return _mData.size();
     }
-    char& operator[](size_t p)
+    char &operator[](size_t p)
     {
         return _mData[p];
     }
     //bool empty() { return _str.Empty(); }
-
-    static std::string DefaultTokenSeparators()
-    {
-        return String::_msDefaultTokenSeparators;
-    }
     
-    static std::string TokenSeparators()
-    {
-        return String::_msDefaultTokenSeparators;
-    }
-    std::size_t Words(String::Word::List & Collection, const std::string & Delimiters = "", bool KeepAsWord = true) const;
-    
-    int Filter(const String::List & a_exp);
 
-    template<typename T> std::string Expand(const T & cnt)
+    
+    int Filter(const String::List &a_exp);
+    
+    template<typename T> std::string Expand(const T &cnt)
     {
         String ss;
-
-        int x = cnt.size();
-        for (auto item : cnt)
+        
+        int      x = cnt.size();
+        for(auto item: cnt)
         {
             ss << item;
-            if (x-- > 1)
+            if(x-- > 1)
                 ss << ',';
         }
         return ss();
     }
-
+    
     static std::string ToUpper(std::string s)
     {
         std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
             return std::toupper(c);
         });
-
+        
         return s;
     }
     static std::string ToLower(std::string s)
@@ -592,16 +580,16 @@ public:
         std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
             return std::tolower(c);
         });
-
+        
         return s;
     }
     static std::string SizeF(uint64_t sz);
-    template<typename T> String& operator<<(const T & Argument)
+    template<typename T> String &operator<<(const T &Argument)
     {
         return *this;
     }
-
-    template<typename T> String& Hex(T & v)
+    
+    template<typename T> String &Hex(T &v)
     {
         std::stringstream is(_mData.c_str() + 2);
         //std::cerr << " this:'" << _D.c_str()+2 << "' -> ";
@@ -609,7 +597,7 @@ public:
         //std::cerr << v << '\n';
         return *this;
     }
-
+    
     /*!
      * @brief "Stringify Bytes into binary representation.
      * @tparam T  Argument of type T
@@ -621,28 +609,28 @@ public:
     template<typename T> static std::string ToBinary(T __arg, bool padd = false, int f = 128)
     {
         uint8_t seq;
-        int nbytes = sizeof(T);
-
+        int     nbytes = sizeof(T);
+        
         uint8_t tableau[sizeof(T)];
-        memcpy(tableau, (uint8_t*)&__arg, nbytes);
+        memcpy(tableau, (uint8_t *) &__arg, nbytes);
         std::string stream = "";
-        int s = 0;
+        int         s      = 0;
         //bool discard = false;
-        for (int x = 1; x <= nbytes; x++)
+        for(int     x      = 1; x <= nbytes; x++)
         {
             seq = tableau[nbytes - x];
-            if ((x == 1 && !padd && !seq) || (stream.empty() && !padd && !seq))
+            if((x == 1 && !padd && !seq) || (stream.empty() && !padd && !seq))
                 continue;
-            for (int y = 7; y >= 0; y--)
+            for(int y = 7; y >= 0; y--)
             { // est-ce que le bit #y est � 1 ?
-                if (s >= f)
+                if(s >= f)
                 {
                     stream += ' ';
                     s = 0;
                 }
                 ++s;
                 uint8_t b = 1 << y;
-                if (b & seq)
+                if(b & seq)
                     stream += '1';
                 else
                     stream += '0';
@@ -654,11 +642,13 @@ public:
     /*!
         Important: renommer begin et end &agrave; cbegin et cend pour std::string::const_iterator !!
     */
-    std::string::iterator Begin() { return _mData.begin(); }
-    std::string::iterator End() { return _mData.end(); }
+    std::string::iterator Begin()
+    { return _mData.begin(); }
+    std::string::iterator End()
+    { return _mData.end(); }
     // --------------------------
 private:
-    int PushWord(Word::List & strm, Word & w, std::string::size_type sz);
+    int PushWord(Word::List &strm, Word &w, std::string::size_type sz);
     
 };
 

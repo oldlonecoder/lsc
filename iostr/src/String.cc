@@ -3,12 +3,12 @@
 //
 
 #include <lsc/iostr/String.h>
+#include <lsc/iostr/CString.h>
 
 namespace Lsc
 {
 
-string                      String::_msNull;
-[[maybe_unused]] string     String::_msDefaultTokenSeparators = "\\%(){}[]`$#@!;,~?^&<>=+-*/:.";
+string                           String::_msNull;
 
 String::~String()
 {
@@ -23,220 +23,6 @@ String::String(std::string_view aStr) : _mData(aStr)
 {}
 String::String(const String &aStr) : _mData(aStr._mData)
 {}
-
-#pragma region ProcessingTokens
-String::SPS::SPS(const std::string &Str)
-{
-    mStart = mPos = Str.cbegin();
-    mStop  = Str.cend();
-}
-
-bool String::SPS::Skip()
-{
-    if(End())
-        return false;
-    
-    while(isspace(*mPos))
-    {
-        switch(*mPos)
-        {
-            case 10:
-            {
-                if((++mPos) >= mStop)
-                    return false;
-                if(*mPos == 13)
-                    ++mPos;
-                ++mLine;
-                mCol = 1;
-            }
-                break;
-            case 13:
-            {
-                if((++mPos) >= mStop)
-                    return false;
-                if(*mPos == 10)
-                    ++mPos;
-                ++mLine;
-                mCol = 1;
-            }
-                break;
-            case '\t':++mPos;
-                ++mCol;
-                break;
-            default:++mPos;
-                ++mCol;
-                break;
-        }
-    }
-    return mPos < mStop;
-}
-
-bool String::SPS::End()
-{
-    return mPos >= mStop;
-}
-
-bool String::SPS::operator++()
-{
-    if(mPos >= mStop)
-        return false;
-    ++mPos;
-    ++mCol;
-    if(mPos >= mStop)
-        return false;
-    return Skip();
-}
-
-bool String::SPS::operator++(int)
-{
-    if(mPos >= mStop)
-        return false;
-    ++mPos;
-    ++mCol;
-    if(mPos >= mStop)
-        return false;
-    return Skip();
-}
-
-String::SPS &String::SPS::operator>>(String::Word &w)
-{
-    w.mStart    = mPos;
-    w.mLine     = mLine;
-    w.mCol      = mCol;
-    w.mPosition = mIndex = (uint64_t) (mPos - mStart);
-    return *this;
-}
-
-/*!
-* @brief break/split/tokenize,etc... the content of this iostr into pieces.
-* @param Collection  OUTPUT reference to the 'Words array' containter, filled by this method.
-* @param a_delimiters Separators in the form of a string of ascii-8 characters.
-* @param KeepAsWord if true (or non-zero), the Separators will be put into the collection as they appear
-* @return number of "Words/tokens" contained into the Collection.
-* @notice : After several years of experience and experimentations, offset have determined that
-* white-spaces/ctrl or spacing characters are silent and implicit delimiters, in addition to the ones supplied by \c a_delimiters.
-*/
-std::size_t String::Words(String::Word::List &Collection, const std::string &aDelimiters, bool KeepAsWord) const
-{
-    
-    String::SPS Crs = String::SPS(_mData);
-    if(_mData.empty())
-    {
-        std::cout << " --> Contents is Empty!";
-        return (std::size_t) 0;
-    }
-    Crs.Reset(_mData);
-    std::string token_separators = aDelimiters.empty() ? String::_msDefaultTokenSeparators : aDelimiters;
-    if(!Crs.Skip())
-    {
-        //std::cout << " --> Contents Skip is false? (internal?)...\n";
-        return (std::size_t) 0;
-    }
-    Word w;
-    Crs >> w;
-    
-    while(!Crs.End())
-    {
-        //if (!Collection.empty());
-        std::string::const_iterator cc = Crs.mPos;
-        if(token_separators.find(*Crs.mPos) != string::npos)
-        {
-            cc = Crs.mPos;
-            if(cc > w.mStart)
-            {
-                --cc;
-                Collection.push_back({w.mStart, cc, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-                
-                Crs >> w;
-                cc = Crs.mPos;
-            }
-            
-            // '//' as one token instead of having two consecutive '/'
-            if((*Crs.mPos == '/') && (*(Crs.mPos + 1) == '/'))
-                ++Crs;
-            
-            if(KeepAsWord)
-            {
-                Collection.push_back({w.mStart, Crs.mPos, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-            }
-            ++Crs;
-            //std::cout << "        Iterator eos: " << _Cursor.end() << "\n";
-            if(!Crs.End())
-                Crs >> w;
-            else
-            {
-                return Collection.size();
-            }
-            
-        }
-        else if((*Crs.mPos == '\'') || (*Crs.mPos == '"'))
-        { // Quoted litteral string...
-            Crs >> w;
-            if(KeepAsWord)
-            {
-                // Create the three parts of the quoted string: (") + (litteral) + (") ( or ' )
-                // So, we save the Word coords anyway.
-                Collection.push_back({w.mStart, w.mStart, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-            }
-            
-            string::const_iterator p = ScanTo(w.mStart + (KeepAsWord ? 0 : 1), *Crs.mPos); // w.B is the starting position, _Cursor.m is the quote delim.
-            while(Crs.mPos < p)
-                ++Crs; // compute white spaces!!!
-            
-            if(KeepAsWord)
-            {
-                // then push the litteral that is inside the quotes.
-                Collection.push_back({w.mStart + 1, p - 1, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-                //++_Cursor; // _Cursor now on the closing quote
-                Crs >> w; // Litteral is done, update w.
-                Collection.push_back({w.mStart, p, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-            }
-            else
-            {
-                // Push the entire quote delims surrounding the litteral as the Word.
-                Collection.push_back({w.mStart, Crs.mPos, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-            }
-            if(++Crs)
-                Crs >> w;
-            else
-                return Collection.size();
-            
-        }
-        else
-        {
-            cc = Crs.mPos;
-            ++cc;
-            if(cc == Crs.mStop)
-            {
-                ++Crs.mPos;
-                break;
-            }
-            if(isspace(*cc))
-            {
-                if(w.mStart < cc)
-                {
-                    Collection.push_back({w.mStart, cc - 1, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-                    ++Crs;
-                }
-                
-                if(Crs.Skip())
-                {
-                    Crs >> w;
-                    continue;
-                }
-                return Collection.size();
-            }
-            if(!Crs.End())
-                ++Crs; // advance offset to the next separator/white space.
-        }
-    }
-    if(Crs.mPos > w.mStart)
-        Collection.push_back({w.mStart, Crs.mPos - 1, Crs.mStop, w.mLine, w.mCol, w.mPosition});
-    
-    return Collection.size();
-}
-
-#pragma endregion ProcessingTokens
 
 String &String::operator+=(const String &aStr)
 {
@@ -297,7 +83,7 @@ bool String::SkipWS(std::basic_string<char, std::char_traits<char>, std::allocat
 }
 bool String::SkipWS(const char *pos)
 {
-
+    return false;
 }
 
 String &String::operator>>(string &_arg)
@@ -309,7 +95,7 @@ String &String::operator>>(string &_arg)
 std::string String::MakeStr(const char *B, const char *E)
 {
     std::string Str;
-    const char *C = B;
+    const char  *C = B;
     if((!B) || (!E) || (!*B) || (!*E))
         return Str;
     while(C <= E)
@@ -318,26 +104,23 @@ std::string String::MakeStr(const char *B, const char *E)
     return Str;
 }
 
-
 void String::Clear()
 {
     _mData.clear();
     
 }
 
-
 std::string String::DateTime(const string &str_fmt)
 {
-    time_t rawtime;
+    time_t    rawtime;
     struct tm *timeinfo;
-    char tmb[180];
+    char      tmb[180];
     std::time(&rawtime);
     timeinfo = std::localtime(&rawtime);
     std::strftime(tmb, 60, str_fmt.c_str(), timeinfo);
     std::string _s = tmb;
     return tmb;
 }
-
 
 std::string String::ExtractSurrounded(const string &first_lhs, const string &first_rhs)
 {
@@ -349,15 +132,6 @@ std::string String::ExtractSurrounded(const string &first_lhs, const string &fir
         return "";
     
     return _mData.substr(lhs_pos, rhs_pos - lhs_pos);
-}
-
-std::string::const_iterator String::ScanTo(std::string::const_iterator start, char c) const
-{
-    string::const_iterator p = start;
-    ++p;
-    while((p != _mData.end()) && (*p != c))
-        ++p;
-    return p;
 }
 
 const char *String::ScanTo(const char *start, char c) const
@@ -373,7 +147,7 @@ const char *String::ScanTo(const char *start, char c) const
 
 int String::Filter(const String::List &a_exp)
 {
-    if(!a_exp.size())
+    if(a_exp.empty())
         return 0;
     auto i = a_exp.cbegin();
     

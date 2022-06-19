@@ -4,13 +4,15 @@
 
 #pragma once
 
-#include <lsc/iostr/String.h>
+#include <lsc/iostr/CArguments.h>
 
 namespace Lsc
 {
 
 class Test
 {
+    CArgumentList<Test>* _mpArgs = nullptr;
+    
     char **argv = nullptr;
     int argc = 0;
 public:
@@ -18,8 +20,9 @@ public:
     Test(int argc, char **argv);
     ~Test() = default;
     
+    int execute();
     
-    int exec();
+    [[nodiscard]] bool HasArgs() const;
     
     
 };
