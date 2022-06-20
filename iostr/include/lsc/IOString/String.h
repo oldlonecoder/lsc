@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <lsc/iostr/dlexport.h>
+#include <lsc/IOString/dlexport.h>
 
 #include <iostream>
 #include <cstring>
@@ -312,96 +312,16 @@ struct IOSTR_LIB ColorData
     //uint32_t rgb() const;
 };
 
-
-
 class IOSTR_LIB String
 {
-    string                         _mData;
-    static string                  _msNull;
+    string        _mData;
+    static string _msNull;
     
     friend class CString;
-    /*!
-     * @brief Format the string
-     *
-     * @author Serge Lussier (oldlonecoder), lussier.serge@gmail.com
-     */
-    struct __attribute__ ((visibility ("hidden")))  Format final
-    {
-        string            &mString;
-        string            mArgStr;
-        string::size_type mPos = string::npos;
-        
-        Format() = delete;
-        
-        Format(string &aData) : mString(aData)
-        {
-            mPos = mString.find('%', 0);
-        }
-        
-        ~Format()
-        {
-            mArgStr.clear();
-        }
-        
-        explicit operator bool() const
-        { return mPos != string::npos; }
-    }; // struct String::Format
-
-public:
-    struct IOSTR_LIB Word
-    {
-        std::string::const_iterator mStart;
-        std::string::const_iterator mE;
-        std::string::const_iterator mSE;
-        
-        std::string operator()();
-        std::string operator*();
-        
-        using List = std::vector<String::Word>;
-        using Iterator = List::iterator;
-        [[maybe_unused]] std::string Mark() const;
-        
-        int         mLine     = 1;
-        int         mCol      = 1;
-        std::size_t mPosition = 0;
-        void operator++();
-        void operator++(int);
-        
-        std::string Location();
-    };
-
-private:
-    struct __attribute__ ((visibility ("hidden"))) SPS
-    {
-        std::string::const_iterator mStart;
-        std::string::const_iterator mPos;
-        std::string::const_iterator mStop; /// ...
-        
-        int      mLine  = 1;
-        int      mCol   = 1;
-        uint64_t mIndex = 0;
-        
-        SPS() = default;
-        ~SPS() = default;
-        
-        SPS(const std::string &Str);
-        bool Skip();
-        bool End();
-        bool operator++();
-        bool operator++(int);
-        void Reset(const std::string &_str)
-        {
-            mPos   = mStart = _str.cbegin();
-            mLine  = mCol   = 1;
-            mIndex = 0;
-            mStop  = _str.cend();
-        }
-        SPS &operator>>(String::Word &W);
-        //BCE& operator = (const Word& w);
-    } _mCursor;
 
 public:
     using List = std::vector<std::string>;
+    using Iterator = List::iterator;
     
     String() = default;
     String(const char *aStr);
@@ -457,7 +377,6 @@ public:
     template<typename T> String &operator+(const T &a)
     {
         std::ostringstream os;
-        
         os << a;
         _mData.append(os.str());
         return *this;
@@ -503,7 +422,7 @@ public:
     String &operator>>(std::string &_arg);
     static std::string MakeStr(const char *B, const char *E);
     
-    char *Dup() const
+    [[nodiscard]] char *Dup() const
     {
         return strdup(_mData.c_str());
     }
@@ -513,21 +432,13 @@ public:
         return _mData.c_str();
     }
     
-    //    struct TEACC_CORE_DLL rect_xy
-    //    {
-    //        int x = -1;
-    //        int y = -1;
-    //    };
-    //
-    //
-    
     void Clear();
     
-    //virtual const std::string& tea_id() { return "iostr";}
+    //virtual const std::string& tea_id() { return "IOString";}
     
     static std::string DateTime(const std::string &str_fmt);
     
-    template<typename t> String &operator=(const t &_a)
+    template<typename T> String &operator=(const T &_a)
     {
         std::ostringstream os;
         os << _a;
@@ -535,8 +446,9 @@ public:
         _mData = os.str();
         return *this;
     }
-    std::string ExtractSurrounded(const std::string &first_lhs, const std::string &first_rhs);
-    [[nodiscard]] std::string::const_iterator ScanTo(std::string::const_iterator start, char c) const;
+    
+    string ExtractSurrounded(const string &first_lhs, const std::string &first_rhs);
+    string::iterator ScanTo(string::iterator start, char c);
     const char *ScanTo(const char *start, char c) const;
     
     [[nodiscard]] size_t Length() const
@@ -547,9 +459,9 @@ public:
     {
         return _mData[p];
     }
-    //bool empty() { return _str.Empty(); }
     
-
+    explicit operator bool()
+    { return !_mData.empty(); }
     
     int Filter(const String::List &a_exp);
     
@@ -613,10 +525,10 @@ public:
         
         uint8_t tableau[sizeof(T)];
         memcpy(tableau, (uint8_t *) &__arg, nbytes);
-        std::string stream = "";
-        int         s      = 0;
-        //bool discard = false;
-        for(int     x      = 1; x <= nbytes; x++)
+        std::string stream;
+        int         s = 0;
+        
+        for(int x = 1; x <= nbytes; x++)
         {
             seq = tableau[nbytes - x];
             if((x == 1 && !padd && !seq) || (stream.empty() && !padd && !seq))
@@ -639,16 +551,12 @@ public:
         /*tableau.Clear();*/
         return stream;
     }
-    /*!
-        Important: renommer begin et end &agrave; cbegin et cend pour std::string::const_iterator !!
-    */
+    
     std::string::iterator Begin()
     { return _mData.begin(); }
     std::string::iterator End()
     { return _mData.end(); }
     // --------------------------
-private:
-    int PushWord(Word::List &strm, Word &w, std::string::size_type sz);
     
 };
 

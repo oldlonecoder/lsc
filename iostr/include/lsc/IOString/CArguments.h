@@ -5,8 +5,8 @@
 //#ifndef LSC_CARGUMENTS_H
 //#define LSC_CARGUMENTS_H
 
-#include <lsc/iostr/CString.h>
-#include <lsc/iostr/String.h>
+// #include <lsc/IOStr/CString.h>
+//#include <lsc/IOStr/String.h>
 
 #include <map>
 

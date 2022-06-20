@@ -242,4 +242,55 @@ std::size_t CString::Words(CString::Word::List &Collection, string_view aDelimit
 
 #pragma endregion ProcessingTokens
 
+string_view CString::Word::operator()()
+{
+    return string_view{&(*mStart), static_cast<size_t>(mE-mStart)};
+}
+
+string_view CString::Word::operator*()
+{
+    return string_view{&(*mStart), static_cast<size_t>(mE-mStart)};
+}
+std::string CString::Word::Mark() const
+{
+    std::string Str;
+    auto  CStart = mStart - mPosition;
+    int                         l  = 1;
+    auto cc = CStart;
+    // localiser le debut de la ligne;
+    while(*cc && (cc > CStart) && (*cc != '\n') && (*cc != '\r'))
+        --cc;
+    // debut de la ligne ou de la source:
+    if(cc >= CStart)
+    {
+        if((*cc == '\n') || (*cc == '\r'))
+            ++cc;
+        while((cc != mSE) && (*cc != '\n') && (*cc != '\r'))
+            Str += *cc++;
+    }
+    
+    Str += '\n'; // Must not assume newline platform. Todo: call newline (format) platform dependant generator
+    for(int x = 1; x < mCol; x++)
+        Str += ' ';
+    Str += '^';
+    return Str;
+}
+
+
+void CString::Word::operator++()
+{
+
+}
+void CString::Word::operator++(int)
+{
+
+}
+
+
+string CString::Word::Location() const
+{
+    std::ostringstream in;
+    in << "(" << mLine << ',' << mCol << ')';
+    return in.str();
+}
 } // Lsc

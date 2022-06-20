@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16..3.20 FATAL_ERROR)
 # Project name
 
-project(iostr VERSION 0.0.1 LANGUAGES CXX)
+project(IOString VERSION 0.0.1 LANGUAGES CXX)
 
 
 include(GNUInstallDirs)
@@ -16,7 +16,7 @@ add_library(
         SHARED
         include/${FrameWorkName}/${PROJECT_NAME}/String.h
         src/String.cc
-        include/lsc/iostr/CArguments.h src/CString.cc include/lsc/iostr/CString.h)
+		include/lsc/IOString/CArguments.h src/CString.cc include/lsc/IOString/CString.h src/Encoding/Color.cc include/lsc/IOString/Encoding/Color.h)
 
 
 

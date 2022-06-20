@@ -39,8 +39,8 @@ public:
         string_view::iterator mE;
         string_view::iterator mSE;
         
-        std::string operator()();
-        std::string operator*();
+        string_view operator()();
+        string_view operator*();
         
         using List = std::vector<CString::Word>;
         using Iterator = List::iterator;
@@ -51,16 +51,15 @@ public:
         std::size_t mPosition = 0;
         void operator++();
         void operator++(int);
-        
-        std::string Location();
+        [[nodiscard]] std::string Location() const;
     };
     std::size_t Words(CString::Word::List &Collection, string_view Delimiters = "", bool KeepAsWord = true);
     
     using List = std::vector<string_view>;
     
-    CString(const std::string& aString);
+    explicit CString(const std::string& aString);
     CString() = default;
-    CString(string_view&& aString);
+    explicit CString(string_view&& aString);
     ~CString();
 private:
     struct __attribute__ ((visibility ("hidden"))) SPS
@@ -76,7 +75,7 @@ private:
         SPS() = default;
         ~SPS() = default;
         
-        SPS(string_view& aCStr);
+        explicit SPS(string_view& aCStr);
         bool Skip();
         bool End();
         bool operator++();

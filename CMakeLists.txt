@@ -5,12 +5,12 @@ project(${FrameWorkName} VERSION 0.1.0 LANGUAGES CXX)
 
 message ("**************** " ${FrameWorkName} " Master Project ********************")
 #
-option(BUILD_IOSTR "Enable building the common string utilities library" ON)
-#option(BUILD_LOGGER "Enable building the c-logger sub module library" ON)
-#option(BUILD_ANSIUI "Enable building the ansi-ui submodule library" ON)
-#option(BUILD_DLLOADER "Enable building the dynamic lib loader submodule library" ON)
-#option(BUILD_XIO "Enable building the dynamic lib loader submodule library" ON)
-option(BUILD_TESTS "Enable building the global tests application " ON)
+option(BUILD_IOSTR "Enable building the common string utilities (IOStr) library" ON)
+#option(BUILD_LOGGER "Enable building the c-logger sub module (Logger) library" ON)
+#option(BUILD_ANSIUI "Enable building the ansi-ui submodule (AnsiUI)library" ON)
+#option(BUILD_DLPLUGIN "Enable building the dynamic lib loader submodule (DLPlugin) library" ON)
+#option(BUILD_XIO "Enable building the dynamic lib loader submodule (Scripture) library" ON)
+option(BUILD_TESTS "Enable building the global tests (Test.app) application " ON)
 #
 
 SET(FRAMEWORK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
@@ -21,8 +21,8 @@ message("${FrameWorkName} Root Directory:" ${FRAMEWORK_ROOT})
 
 
 if(BUILD_IOSTR)
-    SET(IOSTR_INCLUDE_DIR ${FRAMEWORK_ROOT}/iostr/include)
-    add_subdirectory(iostr)
+    SET(IOSTR_INCLUDE_DIR ${FRAMEWORK_ROOT}/IOStr/include)
+    add_subdirectory(IOStr)
     message ("iostr sub project:" "libiostr.{so/dll/dylib} set -> ${IOSTR_INCLUDE_DIR}")
 endif()
 
