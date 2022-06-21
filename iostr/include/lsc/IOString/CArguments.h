@@ -6,7 +6,7 @@
 //#define LSC_CARGUMENTS_H
 
 // #include <lsc/IOStr/CString.h>
-//#include <lsc/IOStr/String.h>
+#include <lsc/IOString/String.h>
 
 #include <map>
 

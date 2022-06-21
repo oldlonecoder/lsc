@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <lsc/iostr/CArguments.h>
+#include <lsc/IOString/CArguments.h>
 
 namespace Lsc
 {

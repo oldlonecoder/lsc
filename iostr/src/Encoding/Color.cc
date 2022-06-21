@@ -2,13 +2,15 @@
 // Created by Mobile Klinik on 2022-06-20.
 //
 
-#include "lsc/IOString/Encoding/Color.h"
-#include "lsc/IOString/String.h"
+//#include <lsc/IOString/Encoding/Color.h>
+
+// Dependance circulaire :
+#include <lsc/IOString/String.h>
 
 namespace Lsc
 {
 
-
+static  Color::Format color_format = Color::Format::Ansi256;
 // ----------------------color -----------------------
 #pragma region Color
 static std::vector<std::string> html_colors =
@@ -602,6 +604,5 @@ std::string Color::Rgb(Color::Type aColorName)
 }
 
 #pragma endregion Color
-
 
 } // Lsc
