@@ -16,7 +16,7 @@ add_library(
         SHARED
         include/${FrameWorkName}/${PROJECT_NAME}/String.h
         src/String.cc
-		include/lsc/IOString/CArguments.h src/CString.cc include/lsc/IOString/CString.h src/Encoding/Color.cc include/lsc/IOString/Encoding/Color.h)
+		include/lsc/IOString/CArguments.h src/Encoding/Color.cc include/lsc/IOString/Encoding/Color.h)
 
 
 
