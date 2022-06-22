@@ -21,9 +21,9 @@ message("${FrameWorkName} Root Directory:" ${FRAMEWORK_ROOT})
 
 
 if(BUILD_IOSTR)
-    SET(IOSTR_INCLUDE_DIR ${FRAMEWORK_ROOT}/IOStr/include)
-    add_subdirectory(IOStr)
-    message ("iostr sub project:" "libiostr.{so/dll/dylib} set -> ${IOSTR_INCLUDE_DIR}")
+    SET(IOSTR_INCLUDE_DIR ${FRAMEWORK_ROOT}/IOString/include)
+    add_subdirectory(IOString)
+    message ("iostr sub project:" "libIOString.{so/dll/dylib} set -> ${IOSTR_INCLUDE_DIR}")
 endif()
 
 
