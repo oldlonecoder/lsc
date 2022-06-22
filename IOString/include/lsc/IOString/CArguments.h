@@ -20,13 +20,16 @@ using std::cout;
 template<typename T> class CArgumentList
 {
     T                  &_mInvokeObject;
-    CString::List _mArgs;
+    int _mArgc = 0;
+    char ** _mArgv = nullptr;
+    
+    CString::List _mArgs; ///< Unnamed (and no switch) Arguments.
     CString::Token::List _mTokens; ///< List of cmdline components;
 public:
     using Switch [[maybe_unused]] = int (T::*)(CString);
     
     
-    class IOSTR_LIB CArgument
+    class IOSTR_LIB Argument
     {
         string _mValue;
         string _mSwitchToken;
@@ -41,17 +44,17 @@ public:
         CArgumentList<T>::Switch _mSwitchFn = nullptr;
     public:
         
-        using List = std::map<string, CArgument>;
+        using List = std::map<string, Argument>;
         
-        CArgument() = default;
-        CArgument(string aSwitchToken, string aArgName, bool aReqValue, bool aRequired, CArgumentList<T>::Switch aSwitchFnPtr):
+        Argument() = default;
+        Argument(string aSwitchToken, string aArgName, bool aReqValue, bool aRequired, CArgumentList<T>::Switch aSwitchFnPtr):
         _mSwitchToken(std::move(aSwitchToken)),
         _mName(std::move(aArgName)),
         _mRequire({aReqValue,aRequired,false}),
         _mSwitchFn(aSwitchFnPtr)
         {}
         
-        ~CArgument() = default;
+        ~Argument() = default;
         
         bool RequiresValue()
         {
@@ -69,15 +72,28 @@ public:
         bool &Used()
         {
             return _mRequire.Used;
-        
         }
+        
+        
     };
     
     CArgumentList() = delete;
+    CArgumentList(int aArgc, char** aArgv):
+    _mArgc(aArgc),
+    _mArgv(aArgv)
+    {
+    }
     explicit CArgumentList(T &aObj) : _mInvokeObject(aObj)
     {}
     
+    CArgumentList& operator << (CArgumentList::Argument&& aArg)
+    {
+        _mArguments[aArg._mName] = aArg;
+        return *this;
+    }
     
+private:
+    typename Argument::List _mArguments;
 };
 }
 //#endif //LSC_CARGUMENTS_H

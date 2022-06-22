@@ -14,7 +14,7 @@ int Lsc::Test::execute()
     if(HasArgs())
     {
         std::cout << argv[0] << " ==> arg count: " << argc << "...\n";
-        CString Str = static_cast<const char*>(argv[1]);
+        CString Str = argv[1];
         std::cout << "argv[1]:" << Str() << '\n';
         //...
         for(int i {1}; i < argc; i++)
