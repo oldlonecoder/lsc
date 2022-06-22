@@ -7,7 +7,7 @@
 namespace Lsc
 {
 
-[[maybe_unused]] string_view CString::_mDdefaultTokenSeparators = "\\%(){}[]`$#@!;,~?^&<>=+-*/:.";
+[[maybe_unused]] string_view CString::_mDefaultTokenSeparators = "\\%(){}[]`$#@!;,~?^&<>=+-*/:.";
 
 
 std::string CString::Token::operator()() const
@@ -186,7 +186,7 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
         return (std::size_t) 0;
     }
     Crs.Reset(_mData);
-    string_view token_separators = aDelimiters.empty() ? CString::_mDdefaultTokenSeparators : aDelimiters;
+    string_view token_separators = aDelimiters.empty() ? CString::_mDefaultTokenSeparators : aDelimiters;
     if(!Crs.Skip())
     {
         //std::cout << " --> Contents Skip is false? (internal?)...\n";
@@ -294,6 +294,10 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
     
     return Collection.size();
 }
+CString::CString(string_view aStr):
+_mData(aStr)
+{
 
+}
 
 } // Lsc

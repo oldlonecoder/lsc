@@ -6,7 +6,9 @@
 //#define LSC_CARGUMENTS_H
 
 // #include <lsc/IOStr/CString.h>
-#include <lsc/IOString/String.h>
+#pragma once
+
+#include <lsc/IOString/CString.h>
 
 #include <map>
 
@@ -19,9 +21,9 @@ template<typename T> class CArgumentList
 {
     T                  &_mInvokeObject;
     CString::List _mArgs;
-    CString::Word::List _mWords; ///< List of cmdline components;
+    CString::Token::List _mTokens; ///< List of cmdline components;
 public:
-    using Switch [[maybe_unused]] = int (T::*)(const string &);
+    using Switch [[maybe_unused]] = int (T::*)(CString);
     
     
     class IOSTR_LIB CArgument

@@ -29,9 +29,17 @@ using std::vector;
 class IOSTR_LIB CString
 {
     string_view                         _mData;///< Private/Encapsulated std::string instance.
-    [[maybe_unused]] static string_view _mDdefaultTokenSeparators;
+    [[maybe_unused]] static string_view _mDefaultTokenSeparators;
 public:
     using Iterator = string_view::iterator;
+    using List     = std::vector<string_view>;
+    
+    
+    
+    CString() = default;
+    CString(string_view);
+    //CString(string&&);
+    ~CString() = default;
     
     struct IOSTR_LIB Token
     {
