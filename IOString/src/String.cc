@@ -13,7 +13,6 @@ namespace Lsc
 {
 using std::string;
 
-string  String::_default_token_separators = "\\%(){}[]`$#@!;,~?^&<>=+-*/:.";
 string  String::__nullstr__               = "";
 
 std::ostream &operator<<(std::ostream &in, const String &_s)
@@ -24,58 +23,42 @@ std::ostream &operator<<(std::ostream &in, const String &_s)
 
 String::String()
 {
-    // _D has been instanciated here as well...
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.cend();
 }
 
 String::String(const char *a_str)
 {
     //SOut << __PRETTY_FUNCTION__ << ":[\"" << a_str << "\"]:\n";
     _d = a_str;
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.cend();
 }
 
 String::String(std::string &&a_str)
 {
     std::swap(_d, a_str);
     a_str.clear();
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.cend();
-    
 }
 
 String::String(const string &a_str)
 {
     //ffnl << a_str << "\n";
     _d = a_str;
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.cend();
-    
 }
 
 String::String(const String &Str)
 {
     //ffnl << Str._str << "\n";
     _d      = Str._d;
-    _cursor = Str._cursor;
 }
 
 String::String(String &&Str) noexcept
 {
     //ffnl << Str._str << "\n";
     std::swap(_d, Str._d);
-    _cursor = std::move(Str._cursor);
 }
 
 String::~String()
 {
     //ffnl << _str << "\n";
     _d.clear();
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.cend();
-    
 }
 
 
@@ -94,15 +77,12 @@ String &String::operator=(String &&a_str) noexcept
     //ffnl << a_str._str << "\n";
     std::swap(_d, a_str._d);
     _arg_position = 0;
-    _cursor       = std::move(a_str._cursor);
     return *this;
 }
 
 bool String::operator==(const String &a_str) const
 {
-    
     return _d == a_str._d;
-    
 }
 
 String &String::operator=(string &&a_str)
@@ -110,9 +90,6 @@ String &String::operator=(string &&a_str)
     //ffnl << a_str << "\n";
     swap(_d, a_str);
     _arg_position = 0;
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = --_d.end();
-    
     return *this;
 }
 
@@ -133,9 +110,6 @@ String &String::operator=(const char *a_str)
     else
         _d        = "";
     _arg_position = 0;
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.end();
-    
     return *this;
 }
 
@@ -197,7 +171,6 @@ String &String::operator+=(const string &a_atr)
 {
     _d += a_atr;
     return *this;
-    
 }
 
 String &String::operator+=(char c)
@@ -245,9 +218,6 @@ void String::clear()
 {
     _d.clear();
     _arg_position = (string::size_type) 0;
-    _cursor.start = _cursor.pos = _d.cbegin();
-    _cursor.stop  = _d.end();
-    
 }
 
 std::string String::datetime(const std::string &str_fmt)
@@ -282,9 +252,6 @@ void String::put_arg(const string &aStr)
 // Ce qui fait royalement chier avec les iterateurs des stl, m'est que depuis linenum'iterateur, comment on accede � son conteneur ???????
 bool String::skip_ws(string::iterator &pos)
 {
-    if(_cursor.pos == _cursor.stop)
-        return false;
-    
     if(pos == _d.end()) // aucun moyen de savoir si linenum'it�rateur en est un de notre conteneur "_str" !!
         return false;
     while(isspace(*pos))
@@ -302,69 +269,6 @@ bool String::skip_ws(const char *pos)
     return true;
 }
 
-string String::word::operator()()
-{
-    string _s;
-    if(start == E)
-        _s.insert(_s.begin(), start, E + 1);
-    else
-        _s.insert(_s.begin(), start, E + 1);
-    
-    return _s;
-}
-
-std::string String::word::operator*()
-{
-    string _s;
-    if(start == E)
-        _s.insert(_s.begin(), start, E + 1);
-    else
-        _s.insert(_s.begin(), start, E + 1);
-    return _s;
-}
-
-[[maybe_unused]] std::string String::word::mark() const
-{
-    String                        str;
-    std::string::const_iterator cstart = start - position;
-    
-    int                         l  = 1;
-    std::string::const_iterator cc = cstart;
-    // localiser le debut de la ligne;
-    while(*cc && (cc > cstart) && (*cc != '\n') && (*cc != '\r'))
-        --cc;
-    // debut de la ligne ou de la source:
-    if(cc >= cstart)
-    {
-        if((*cc == '\n') || (*cc == '\r'))
-            ++cc;
-        while((cc != SE) && (*cc != '\n') && (*cc != '\r'))
-            str += *cc++;
-    }
-    String tstr;
-    
-    tstr << str << '\n';
-    for(int x = 1; x < col; x++)
-        tstr << ' ';
-    tstr << '^';
-    return tstr();
-}
-
-void String::word::operator++()
-{
-    
-}
-
-void String::word::operator++(int)
-{
-}
-
-std::string String::word::location()
-{
-    String str = "(%d,%d)";
-    str << line << col;
-    return str();
-}
 
 string::const_iterator String::scan_to(string::const_iterator start, char c) const
 {
@@ -386,134 +290,6 @@ const char *String::scan_to(const char *start, char c) const
     return p;
 }
 
-/*!
-    * @brief break/split/tokenize,etc... the content of this String into pieces.
-    * @param wcollection  OUTPUT reference to the 'Words array' containter, filled by this method.
-    * @param a_delimiters Separators in the form of a string of ascii-8 characters.
-    * @param keep_as_word if true (or non-zero), the Separators will be put into the collection as they appear
-    * @return number of "Words/tokens" contained into the wcollection.
-    * @notice : After several years of experience and experimentations, offset have determined that
-    * white-spaces/ctrl or spacing characters are silent and implicit delimiters, in addition to the ones supplied by \c a_delimiters.
-    */
-std::size_t String::words(String::word::list_t &wcollection, const std::string &a_delimiters, bool keep_as_word) const
-{
-    
-    String::s_p_s Crs = String::s_p_s(_d);
-    if(_d.empty())
-    {
-        std::cout << " --> Contents is Empty!";
-        return (std::size_t) 0;
-    }
-    Crs.reset(_d);
-    std::string token_separators = a_delimiters.empty() ? String::_default_token_separators : a_delimiters;
-    if(!Crs.skip())
-    {
-        //std::cout << " --> Contents Skip is false? (internal?)...\n";
-        return (std::size_t) 0;
-    }
-    word w;
-    Crs >> w;
-    
-    while(!Crs.end())
-    {
-        //if (!wcollection.empty());
-        std::string::const_iterator cc = Crs.pos;
-        if(token_separators.find(*Crs.pos) != string::npos)
-        {
-            cc = Crs.pos;
-            if(cc > w.start)
-            {
-                --cc;
-                wcollection.push_back({w.start, cc, Crs.stop, w.line, w.col, w.position});
-                
-                Crs >> w;
-                cc = Crs.pos;
-            }
-            
-            // '//' as one token instead of having two consecutive '/'
-            if((*Crs.pos == '/') && (*(Crs.pos + 1) == '/'))
-                ++Crs;
-            
-            if(keep_as_word)
-            {
-                wcollection.push_back({w.start, Crs.pos, Crs.stop, w.line, w.col, w.position});
-            }
-            ++Crs;
-            //std::cout << "        Iterator eos: " << _Cursor.end() << "\n";
-            if(!Crs.end())
-                Crs >> w;
-            else
-            {
-                return wcollection.size();
-            }
-            
-        }
-        else if((*Crs.pos == '\'') || (*Crs.pos == '"'))
-        { // Quoted litteral string...
-            Crs >> w;
-            if(keep_as_word)
-            {
-                // Create the three parts of the quoted string: (") + (litteral) + (") ( or ' )
-                // So, we save the Word coords anyway.
-                wcollection.push_back({w.start, w.start, Crs.stop, w.line, w.col, w.position});
-            }
-            
-            string::const_iterator p = scan_to(w.start + (keep_as_word ? 0 : 1), *Crs.pos); // w.B is the starting position, _Cursor.m is the quote delim.
-            while(Crs.pos < p)
-                ++Crs; // compute white spaces!!!
-            
-            if(keep_as_word)
-            {
-                // then push the litteral that is inside the quotes.
-                wcollection.push_back({w.start + 1, p - 1, Crs.stop, w.line, w.col, w.position});
-                //++_Cursor; // _Cursor now on the closing quote
-                Crs >> w; // Litteral is done, update w.
-                wcollection.push_back({w.start, p, Crs.stop, w.line, w.col, w.position});
-            }
-            else
-            {
-                // Push the entire quote delims surrounding the litteral as the Word.
-                wcollection.push_back({w.start, Crs.pos, Crs.stop, w.line, w.col, w.position});
-            }
-            if(++Crs)
-                Crs >> w;
-            else
-                return wcollection.size();
-            
-        }
-        else
-        {
-            cc = Crs.pos;
-            ++cc;
-            if(cc == Crs.stop)
-            {
-                ++Crs.pos;
-                break;
-            }
-            if(isspace(*cc))
-            {
-                if(w.start < cc)
-                {
-                    wcollection.push_back({w.start, cc - 1, Crs.stop, w.line, w.col, w.position});
-                    ++Crs;
-                }
-                
-                if(Crs.skip())
-                {
-                    Crs >> w;
-                    continue;
-                }
-                return wcollection.size();
-            }
-            if(!Crs.end())
-                ++Crs; // advance offset to the next separator/white space.
-        }
-    }
-    if(Crs.pos > w.start)
-        wcollection.push_back({w.start, Crs.pos - 1, Crs.stop, w.line, w.col, w.position});
-    
-    return wcollection.size();
-}
 
 int String::filter(const String::list_t &a_exp)
 {
@@ -614,15 +390,15 @@ std::string String::extract_surrounded(const std::string &first_lhs, const std::
  */
 std::string String::type_of(string &&func_desc)// , const std::string& _T) -> _T is the class to search.
 {
-    String               text = std::move(func_desc);
-    String::word::list_t w;
-    
-    std::size_t count = text.words(w);
-    for(auto    s: w)
-    {
-        std::cout << s();
-    }
-    std::cout << '\n';
+//    String               text = std::move(func_desc);
+//    String::word::list_t w;
+//
+//    std::size_t count = text.words(w);
+//    for(auto    s: w)
+//    {
+//        std::cout << s();
+//    }
+//    std::cout << '\n';
     return "c to implement, please\n";
 }
 
@@ -721,87 +497,6 @@ std::string String::format_t::operator()()
     return str.str();
 }
 
-String::s_p_s::s_p_s(const std::string &Str)
-{
-    start = pos = Str.cbegin();
-    stop  = Str.cend();
-}
-
-bool String::s_p_s::skip()
-{
-    if(end())
-        return false;
-    
-    while(isspace(*pos))
-    {
-        switch(*pos)
-        {
-            case 10:
-            {
-                if((++pos) >= stop)
-                    return false;
-                if(*pos == 13)
-                    ++pos;
-                ++line;
-                col = 1;
-            }
-                break;
-            case 13:
-            {
-                if((++pos) >= stop)
-                    return false;
-                if(*pos == 10)
-                    ++pos;
-                ++line;
-                col = 1;
-            }
-                break;
-            case '\t':++pos;
-                ++col;
-                break;
-            default:++pos;
-                ++col;
-                break;
-        }
-    }
-    return pos < stop;
-}
-
-bool String::s_p_s::end()
-{
-    return pos >= stop;
-}
-
-bool String::s_p_s::operator++()
-{
-    if(pos >= stop)
-        return false;
-    ++pos;
-    ++col;
-    if(pos >= stop)
-        return false;
-    return skip();
-}
-
-bool String::s_p_s::operator++(int)
-{
-    if(pos >= stop)
-        return false;
-    ++pos;
-    ++col;
-    if(pos >= stop)
-        return false;
-    return skip();
-}
-
-String::s_p_s &String::s_p_s::operator>>(String::word &w)
-{
-    w.start    = pos;
-    w.line     = line;
-    w.col      = col;
-    w.position = index = (uint64_t) (pos - start);
-    return *this;
-}
 
 String &String::operator<<(Color::Type c)
 {

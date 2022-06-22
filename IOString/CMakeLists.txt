@@ -19,7 +19,7 @@ add_library(
 		include/lsc/IOString/CArguments.h src/Encoding/Color.cc include/lsc/IOString/Encoding/Color.h
 #		src/CString.cc
 #		include/lsc/IOString/CString.h
-)
+		src/CString.cc include/lsc/IOString/CString.h)
 
 
 
