@@ -46,7 +46,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 
 
-target_link_libraries(${PROJECT_NAME} iostr)
+target_link_libraries(${PROJECT_NAME} IOString)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
 

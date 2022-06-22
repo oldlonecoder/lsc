@@ -202,7 +202,7 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
         if(token_separators.find(*Crs.mPos) != string_view::npos)
         {
             cc = Crs.mPos;
-            if(cc > w.start)
+            if(cc > w.mStart)
             {
                 --cc;
                 Collection.push_back({w.mStart, cc, Crs.mStop, w.mLine, w.mCol, w.mPosition});
@@ -235,7 +235,7 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
             {
                 // Create the three parts of the quoted string: (") + (litteral) + (") ( or ' )
                 // So, we save the Token coords anyway.
-                Collection.push_back({w.wStart, w.mStart, Crs.mStop, w.mLine, w.mCol, w.mPosition});
+                Collection.push_back({w.mStart, w.mStart, Crs.mStop, w.mLine, w.mCol, w.mPosition});
             }
             
             CString::Iterator p = ScanTo(w.mStart + (KeepAsWord ? 0 : 1), *Crs.mPos); // w.B is the starting position, _Cursor.m is the quote delim.
@@ -245,7 +245,7 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
             if(KeepAsWord)
             {
                 // then push the litteral that is inside the quotes.
-                Collection.push_back({w.mStart + 1, p - 1, Crs.Stop, w.mLine, w.mCol, w.mPosition});
+                Collection.push_back({w.mStart + 1, p - 1, Crs.mStop, w.mLine, w.mCol, w.mPosition});
                 //++_Cursor; // _Cursor now on the closing quote
                 Crs >> w; // Litteral is done, update w.
                 Collection.push_back({w.mStart, p, Crs.mStop, w.mLine, w.mCol, w.mPosition});
@@ -296,6 +296,24 @@ std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDel
 }
 CString::CString(string_view aStr):
 _mData(aStr)
+{
+
+}
+CString &CString::operator=(string_view aStr)
+{
+    _mData = aStr;
+    return *this;
+}
+CString &CString::operator=(const char *aStr)
+{
+    _mData = aStr;
+    return *this;
+}
+CString::CString(char *aStr): _mData(aStr)
+{
+
+}
+CString::CString(const char *aStr): _mData(aStr)
 {
 
 }

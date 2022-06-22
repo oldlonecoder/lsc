@@ -38,6 +38,9 @@ public:
     
     CString() = default;
     CString(string_view);
+    CString(char* aStr);
+    CString(const char* aStr);
+    
     //CString(string&&);
     ~CString() = default;
     
@@ -91,6 +94,14 @@ public:
         }
         SPS &operator>>(CString::Token &aWord);
     } _mCursor;
+    
+    string_view operator() ()
+    {
+        return _mData.data();
+    }
+    
+    CString& operator=(string_view aStr);
+    CString& operator=(const char* aStr);
 };
 
 } // Lsc

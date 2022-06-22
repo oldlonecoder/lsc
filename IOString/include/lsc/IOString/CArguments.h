@@ -5,7 +5,7 @@
 //#ifndef LSC_CARGUMENTS_H
 //#define LSC_CARGUMENTS_H
 
-// #include <lsc/IOStr/CString.h>
+
 #pragma once
 
 #include <lsc/IOString/CString.h>
@@ -14,7 +14,7 @@
 
 namespace Lsc
 {
-using std::string;
+using std::string_view;
 using std::cout;
 
 template<typename T> class CArgumentList
