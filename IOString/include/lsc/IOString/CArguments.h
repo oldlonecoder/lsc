@@ -87,9 +87,13 @@ public:
     explicit CArgumentList(T &aObj) : _mInvokeObject(aObj)
     {}
     
-    CArgumentList& operator << (CArgumentList::Argument&& aArg)
+    CArgumentList& operator << (typename CArgumentList::Argument&& aArg)
     {
         _mArguments[aArg._mName] = aArg;
+        return *this;
+    }
+    CArgumentList& PushArg(typename CArgumentList::Argument&& aArg)
+    {
         return *this;
     }
     

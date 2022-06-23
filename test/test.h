@@ -25,6 +25,7 @@ public:
     [[nodiscard]] bool HasArgs() const;
     [[nodiscard]] int InitCArgumentList();
     
+    [[nodiscard]] int TheCArg(CString aStr);
     
     
 };

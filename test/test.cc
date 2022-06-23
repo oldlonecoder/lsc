@@ -4,7 +4,7 @@
 
 #include "test.h"
 
-Lsc::Test::Test(int argc, char **argv):argc(argc), argv(argv)
+Lsc::Test::Test(int argc, char **argv) : argc(argc), argv(argv)
 {
 
 }
@@ -28,14 +28,19 @@ int Lsc::Test::execute()
     return 0;
 }
 
-
 bool Lsc::Test::HasArgs() const
 {
     return argc > 1;
 }
 int Lsc::Test::InitCArgumentList()
 {
-    auto Args = CArgumentList<Test>(*this,argc,argv);
+    auto Args = CArgumentList<Test>(*this, argc, argv);
+    Args.PushArg({"", "CString", false,true,&Test::TheCArg});
     
+    return 0;
+}
+
+int Lsc::Test::TheCArg(Lsc::CString aStr)
+{
     return 0;
 }
