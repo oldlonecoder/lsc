@@ -33,3 +33,9 @@ bool Lsc::Test::HasArgs() const
 {
     return argc > 1;
 }
+int Lsc::Test::InitCArgumentList()
+{
+    auto Args = CArgumentList<Test>(*this,argc,argv);
+    
+    return 0;
+}

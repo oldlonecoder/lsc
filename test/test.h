@@ -11,7 +11,7 @@ namespace Lsc
 
 class Test
 {
-    CArgumentList<Test>* _mpArgs = nullptr;
+    
     
     char **argv = nullptr;
     int argc = 0;
@@ -23,6 +23,8 @@ public:
     int execute();
     
     [[nodiscard]] bool HasArgs() const;
+    [[nodiscard]] int InitCArgumentList();
+    
     
     
 };

@@ -78,7 +78,8 @@ public:
     };
     
     CArgumentList() = delete;
-    CArgumentList(int aArgc, char** aArgv):
+    CArgumentList(T& aObj, int aArgc, char** aArgv):
+    _mInvokeObject(aObj),
     _mArgc(aArgc),
     _mArgv(aArgv)
     {
