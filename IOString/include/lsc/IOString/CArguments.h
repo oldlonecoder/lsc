@@ -17,22 +17,42 @@ namespace Lsc
 using std::string_view;
 using std::cout;
 
+enum class ArgSwitchFormat : uint8_t
+{
+    StdShort,      ///< As  -[A-Za-z]+
+    StdNamed,      ///< As --Named
+    NameColon,    ///< As Name: // Default. @see CArgumentList<>::Argument
+    NameEQ        ///< As Name=
+};
+
+
+/*!
+ * @brief Command Line arguments holder/processor.
+ * @tparam T Template Name
+ */
 template<typename T> class CArgumentList
 {
-    T                  &_mInvokeObject;
+    T   &_mInvokeObject;
     int _mArgc = 0;
-    char ** _mArgv = nullptr;
+    char **_mArgv = nullptr;
     
-    CString::List _mArgs; ///< Unnamed (and no switch) Arguments.
+    ArgSwitchFormat _mFormat  = ArgSwitchFormat::NameColon;
+    
+    CString::List        _mSysArgs; ///< Unnamed (and no switch) Arguments.
     CString::Token::List _mTokens; ///< List of cmdline components;
 public:
-    using Switch [[maybe_unused]] = int (T::*)(CString);
+    using Switch [[maybe_unused]] = int (T::*)(CString); ///< class method address that will be invoked as the switch matches.
     
-    
+    /*!
+     * @brief Command line argument holder.
+     * //...
+     *
+     * @author Serge Lussier (oldlonecoder)_, lussier.serge@gmail.com
+     */
     class IOSTR_LIB Argument
     {
-        string _mValue;
-        string _mSwitchToken;
+        string _mValue; ///< Single value argument
+        string _mSwitchToken; ///<
         string _mName;
         struct Require
         {
@@ -47,11 +67,11 @@ public:
         using List = std::map<string, Argument>;
         
         Argument() = default;
-        Argument(string aSwitchToken, string aArgName, bool aReqValue, bool aRequired, CArgumentList<T>::Switch aSwitchFnPtr):
-        _mSwitchToken(std::move(aSwitchToken)),
-        _mName(std::move(aArgName)),
-        _mRequire({aReqValue,aRequired,false}),
-        _mSwitchFn(aSwitchFnPtr)
+        Argument(string aSwitchToken, string aArgName, bool aReqValue, bool aRequired, CArgumentList<T>::Switch aSwitchFnPtr) :
+            _mSwitchToken(std::move(aSwitchToken)),
+            _mName(std::move(aArgName)),
+            _mRequire({aReqValue, aRequired, false}),
+            _mSwitchFn(aSwitchFnPtr)
         {}
         
         ~Argument() = default;
@@ -74,29 +94,29 @@ public:
             return _mRequire.Used;
         }
         
-        
     };
     
     CArgumentList() = delete;
-    CArgumentList(T& aObj, int aArgc, char** aArgv):
-    _mInvokeObject(aObj),
-    _mArgc(aArgc),
-    _mArgv(aArgv)
+    CArgumentList(T &aObj, int aArgc, char **aArgv) :
+        _mInvokeObject(aObj),
+        _mArgc(aArgc),
+        _mArgv(aArgv)
     {
     }
-    explicit CArgumentList(T &aObj) : _mInvokeObject(aObj)
+    explicit CArgumentList(T &aObj) :
+    _mInvokeObject(aObj)
     {}
     
-    CArgumentList& operator << (typename CArgumentList::Argument&& aArg)
+    CArgumentList &operator<<(typename CArgumentList::Argument &&aArg)
     {
         _mArguments[aArg._mName] = aArg;
         return *this;
     }
-    CArgumentList& PushArg(typename CArgumentList::Argument&& aArg)
+    CArgumentList &PushArg(typename CArgumentList::Argument &&aArg)
     {
         return *this;
     }
-    
+
 private:
     typename Argument::List _mArguments;
 };
