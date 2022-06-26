@@ -51,7 +51,7 @@ public:
      *
      * @author Serge Lussier (oldlonecoder)_, lussier.serge@gmail.com
      */
-    class IOSTR_LIB Argument
+    class  Argument
     {
         string _mValue; ///< Assignable Single value argument
         string _mSwitchToken; ///< Configured Switch Token of this Argument
@@ -130,5 +130,6 @@ private:
     typename Argument::List _mArguments;
     typename CArgumentList<T>::Switch _mAnonProc;
 };
+
 }
 //#endif //LSC_CARGUMENTS_H
