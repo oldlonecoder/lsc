@@ -3,6 +3,7 @@
 //
 
 #include "test.h"
+#include <lsc/IOString/String.h>
 
 Lsc::Test::Test(int argc, char **argv) : argc(argc), argv(argv)
 {
@@ -25,7 +26,7 @@ int Lsc::Test::execute()
         std::cout << " Oops! Where are the arguments?\n";
         return 1;
     }
-    return 0;
+    return TestCString();
 }
 
 bool Lsc::Test::HasArgs() const
@@ -42,5 +43,17 @@ int Lsc::Test::InitCArgumentList()
 
 int Lsc::Test::TheCArg(Lsc::CString aStr)
 {
+    return 0;
+}
+int Lsc::Test::TestCString()
+{
+    std::cout << __PRETTY_FUNCTION__ << " - Lsc::String :\n";
+    String Str = "    Hello, Lsc::World!\n";
+    std::cout << Str() << '\n';
+    Str = "    Arg: %d";
+    Str << 42;
+    std::cout << Str() << '\n';
+    return 0;
+    
     return 0;
 }

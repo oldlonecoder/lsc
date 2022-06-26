@@ -26,6 +26,7 @@ public:
     [[nodiscard]] int InitCArgumentList();
     
     [[nodiscard]] int TheCArg(CString aStr);
+    [[nodiscard]] int TestCString();
     
     
 };
