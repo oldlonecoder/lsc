@@ -128,7 +128,7 @@ public:
     }
 private:
     typename Argument::List _mArguments;
-    typename Switch _mAnonProc;
+    typename CArgumentList<T>::Switch _mAnonProc;
 };
 }
 //#endif //LSC_CARGUMENTS_H

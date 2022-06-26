@@ -36,13 +36,19 @@ class IOSTR_LIB String
     
     //char* __buff = nullptr;
     friend class winbuffer;
-
+    struct IOSTR_LIB Format
+    {
+        int mLength = 0;
+        std::size_t mPosition = std::string::npos;
+        
+    };
 private:
+    
     // %[flags][width][.precision][Length]specifier
     struct format_t
     {
         uint8_t     F        = 0; // Flag ( - + . # 0 ) => if s='s' then '-' => justify right; '+' => justify left; '^' => justify center.
-        uint8_t     W        = 0; // Width ( Length )
+        uint8_t     W        = 0; // Width ( Length ) Value
         uint8_t     R        = 0; // Custom flag set if this format requires floating point spec.
         uint8_t     P        = 6; // Precision (Same as  default).
         uint8_t     L        = 0; // Length modifier ( linenum,ll,h,hh )
