@@ -51,9 +51,9 @@ public:
      */
     class IOSTR_LIB Argument
     {
-        string _mValue; ///< Single value argument
-        string _mSwitchToken; ///<
-        string _mName;
+        string _mValue; ///< Assignable Single value argument
+        string _mSwitchToken; ///< Configured Switch Token of this Argument
+        string _mName; ///< Name and-or Long Name of this argument.
         struct Require
         {
             bool Value: 1;
@@ -74,9 +74,13 @@ public:
             _mSwitchFn(aSwitchFnPtr)
         {}
         
-        ~Argument() = default;
+        ~Argument()
+        {
+            _mValue.clear();
+            _mName.clear();
+        }
         
-        bool RequiresValue()
+        bool HasRequiresValue()
         {
             return _mRequire.Value;
         }
@@ -103,9 +107,7 @@ public:
         _mArgv(aArgv)
     {
     }
-    explicit CArgumentList(T &aObj) :
-    _mInvokeObject(aObj)
-    {}
+    
     
     CArgumentList &operator<<(typename CArgumentList::Argument &&aArg)
     {
@@ -117,8 +119,14 @@ public:
         return *this;
     }
 
+    CArgumentList& SetGenArgsProc(CArgumentList<T>::Switch aProc)
+    {
+        _mAnonProc = aProc;
+        return *this;
+    }
 private:
     typename Argument::List _mArguments;
+    typename Switch _mAnonProc;
 };
 }
 //#endif //LSC_CARGUMENTS_H
