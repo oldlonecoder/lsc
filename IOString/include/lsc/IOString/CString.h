@@ -26,7 +26,7 @@ using std::string;
 using std::string_view;
 using std::vector;
 
-class  CString
+class  IOSTR_LIB CString
 {
     string_view                         _mData;///< Private/Encapsulated std::string instance.
     [[maybe_unused]] static string_view _mDefaultTokenSeparators;
