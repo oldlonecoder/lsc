@@ -26,7 +26,7 @@ using std::string;
 using std::string_view;
 using std::vector;
 
-class IOSTR_LIB CString
+class  CString
 {
     string_view                         _mData;///< Private/Encapsulated std::string instance.
     [[maybe_unused]] static string_view _mDefaultTokenSeparators;
@@ -67,7 +67,7 @@ public:
     std::size_t Tokenize(CString::Token::List &Collection, string_view aDelimiters = "", bool KeepAsWord = true) const;
     CString::Iterator ScanTo(CString::Iterator aStart, char c) const;
     
-    struct __attribute__ ((visibility ("hidden"))) SPS
+    struct  SPS
     {
         string_view::iterator mStart;
         string_view::iterator mPos;
