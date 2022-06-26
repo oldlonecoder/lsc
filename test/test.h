@@ -26,8 +26,9 @@ public:
     [[nodiscard]] int InitCArgumentList();
     
     [[nodiscard]] int TheCArg(CString aStr);
+    [[nodiscard]] int TestString();
     [[nodiscard]] int TestCString();
-    
+    [[nodiscard]] int CStringTokenize();
     
 };
 

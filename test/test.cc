@@ -45,7 +45,7 @@ int Lsc::Test::TheCArg(Lsc::CString aStr)
 {
     return 0;
 }
-int Lsc::Test::TestCString()
+int Lsc::Test::TestString()
 {
     std::cout << __PRETTY_FUNCTION__ << " - Lsc::String :\n";
     String Str = "    Hello, Lsc::World!\n";
@@ -54,6 +54,25 @@ int Lsc::Test::TestCString()
     Str << 42;
     std::cout << Str() << '\n';
     return 0;
+    
+    return 0;
+}
+int Lsc::Test::TestCString()
+{
+    String aStr = "New CString.";
+    CString cStr  = aStr.c_str();
+    std::cout << __PRETTY_FUNCTION__ << " - " << cStr() << '\n';
+    return CStringTokenize();
+}
+int Lsc::Test::CStringTokenize()
+{
+    CString aStr = "CString:Token";
+    CString::Token::List  Tokens;
+    auto count = aStr.Tokenize(Tokens);
+    for(auto Token : Tokens)
+    {
+        std::cout << "Token: '" << Token() << "'\n";
+    }
     
     return 0;
 }

@@ -37,10 +37,10 @@ public:
     
     
     CString() = default;
-    CString(string_view);
-    CString(char* aStr);
+    explicit CString(string_view);
+    explicit CString(char* aStr);
     CString(const char* aStr);
-    
+    explicit CString(std::string aStr);
     //CString(string&&);
     ~CString() = default;
     

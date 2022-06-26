@@ -179,7 +179,7 @@ CString::Iterator CString::ScanTo(CString::Iterator aStart, char c) const
 std::size_t CString::Tokenize(CString::Token::List &Collection, string_view aDelimiters, bool KeepAsWord) const
 {
     
-    CString::SPS Crs = CString::SPS(_mData);
+    auto Crs = CString::SPS(_mData);
     if(_mData.empty())
     {
         std::cout << " --> Contents is Empty!";
@@ -317,5 +317,10 @@ CString::CString(const char *aStr): _mData(aStr)
 {
 
 }
+CString::CString(std::string aStr): _mData(aStr.c_str())
+{
+
+}
+
 
 } // Lsc
