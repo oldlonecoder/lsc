@@ -28,6 +28,8 @@ enum class ArgSwitchFormat : uint8_t
 
 /*!
  * @brief Command Line arguments holder/processor.
+ * 
+ * Slowly exploring my own implementation of a cmdline processor, multi-syntax, multi-values, Named and unnamed arguments. 
  * @tparam T Template Name
  */
 template<typename T> class CArgumentList
