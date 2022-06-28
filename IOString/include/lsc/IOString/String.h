@@ -40,7 +40,7 @@ namespace Lsc {
             string &mStr; ///< Mandatory constructor immediate assign
             string mBuf; ///< Working internal temp buffer
             struct Params {
-                char mJustifyCode = 0;///<  { <, >, ^ }.
+                char mJustifyCode = 0;///<  { none,  <, ^, > }.
                 int mWidth = 0; ///< Padding Width.
                 char mFilling = 0; ///< Filling char. (or numerical value)
                 int mPaddingWidth = 0; ///< Padding Group Length/Width ( such as "08b" )
@@ -49,7 +49,6 @@ namespace Lsc {
                 string::size_type mBegin = 0,mEnd = 0,mCursor= 0;
                 Params(Format& aFormat): mFormat(aFormat){}
                 bool Process();
-
             };
 
             int mLength = 0;
@@ -57,9 +56,7 @@ namespace Lsc {
             string::size_type mArgPos = string::npos;
 
             Format() = delete;
-
             ~Format();
-
             Format(string &aStr);
 
             bool LocateArg();
@@ -106,37 +103,23 @@ namespace Lsc {
     public:
 
         String();
-
         String(const String &Str);
-
         String(String &&Str) noexcept;
-
         String(const std::string &aStr);
-
         String(std::string &&aStr);
-
         String(const char *aStr);
 
         ~String();
 
         String &operator=(const String &) = default;
-
         String &operator=(std::string &&aStr);
-
         String &operator=(String &&aStr) noexcept;
-
         String &operator=(const char *aStr);
-
         String &operator+=(const String &aStr);
-
         String &operator+=(const std::string &aStr);
-
         String &operator+=(char c);
-
         String &operator+(const String &aStr);
-
         String &operator+(const std::string &aStr);
-
         String &operator+(char c);
 
         template<typename T>
@@ -181,23 +164,14 @@ namespace Lsc {
 
         // -- on peut maintenant commencer nos routines de manipulations et de traitements....
         static String::List ToList(int argc, char **argv);
-
         String &operator<<(const String &aStr);
-
         String &operator<<(const char *aStr);
-
         String &operator<<(const std::string &aStr);
-
         String &operator<<(char c);
-
         String &operator<<(Color::Type c);
-
         bool SkipWS(std::string::iterator &pos);
-
         static bool SkipWS(const char *pos);
-
         String &operator>>(std::string &_arg);
-
         static std::string MakeStr(const char *B, const char *E);
 
         template<typename T>

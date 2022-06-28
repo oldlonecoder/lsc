@@ -534,6 +534,8 @@ bool String::Format::Input(string aStr)
 bool String::Format::Params::Process()
 {
 
+    std::cout << __PRETTY_FUNCTION__ << " - Format::mPosition:" << mFormat.mPosition << 'n';
+    std::cout << "Format::mArgPosition: " << mFormat.mArgPos << '\n';
     return false;
 }
 
