@@ -13,7 +13,7 @@ namespace Lsc
 {
 using std::string;
 
-string  String::__nullstr__               = "";
+string  String::_msNull               = "";
 
 std::ostream &operator<<(std::ostream &in, const String &_s)
 {
@@ -28,37 +28,37 @@ String::String()
 String::String(const char *a_str)
 {
     //SOut << __PRETTY_FUNCTION__ << ":[\"" << a_str << "\"]:\n";
-    _d = a_str;
+    _mStr = a_str;
 }
 
 String::String(std::string &&a_str)
 {
-    std::swap(_d, a_str);
+    std::swap(_mStr, a_str);
     a_str.clear();
 }
 
 String::String(const string &a_str)
 {
     //ffnl << a_str << "\n";
-    _d = a_str;
+    _mStr = a_str;
 }
 
 String::String(const String &Str)
 {
     //ffnl << Str._str << "\n";
-    _d      = Str._d;
+    _mStr      = Str._mStr;
 }
 
 String::String(String &&Str) noexcept
 {
     //ffnl << Str._str << "\n";
-    std::swap(_d, Str._d);
+    std::swap(_mStr, Str._mStr);
 }
 
 String::~String()
 {
     //ffnl << _str << "\n";
-    _d.clear();
+    _mStr.clear();
 }
 
 
@@ -75,20 +75,20 @@ String::~String()
 String &String::operator=(String &&a_str) noexcept
 {
     //ffnl << a_str._str << "\n";
-    std::swap(_d, a_str._d);
+    std::swap(_mStr, a_str._mStr);
     _arg_position = 0;
     return *this;
 }
 
 bool String::operator==(const String &a_str) const
 {
-    return _d == a_str._d;
+    return _mStr == a_str._mStr;
 }
 
 String &String::operator=(string &&a_str)
 {
     //ffnl << a_str << "\n";
-    swap(_d, a_str);
+    swap(_mStr, a_str);
     _arg_position = 0;
     return *this;
 }
@@ -97,7 +97,7 @@ String &String::operator<<(char c)
 {
     if(scan_arg() == std::string::npos)
     {
-        _d += c;
+        _mStr += c;
         return *this;
     }
     return format<char>(c);
@@ -106,9 +106,9 @@ String &String::operator<<(char c)
 String &String::operator=(const char *a_str)
 {
     if(a_str)
-        _d = a_str;
+        _mStr = a_str;
     else
-        _d        = "";
+        _mStr        = "";
     _arg_position = 0;
     return *this;
 }
@@ -118,15 +118,15 @@ String &String::operator<<(const string &a_str)
     //_scan_next_Arg();
     if(scan_arg() == std::string::npos)
     {
-        _d += a_str;
+        _mStr += a_str;
         return *this;
     }
     return format<const std::string &>(a_str);
 }
 
-String::list_t String::to_stdlist(int argc, char **argv)
+String::List String::ToList(int argc, char **argv)
 {
-    list_t  args;
+    List  args;
     for(int x = 0; x < argc; x++)
     {
         args.push_back(argv[x]);
@@ -142,7 +142,7 @@ String &String::operator<<(const String &a_str)
     {
         std::ostringstream os;
         os << a_str();
-        _d += os.str();
+        _mStr += os.str();
         return *this;
     }
     return format<const std::string &>(a_str());
@@ -154,9 +154,9 @@ String &String::operator<<(const char *a_str)
     if(scan_arg() == std::string::npos)
     {
         std::ostringstream os;
-        os.precision(_decimal_precision);
+        os.precision(_mPrecision);
         os << a_str;
-        _d += os.str();
+        _mStr += os.str();
         return *this;
     }
     return format<const char *>(a_str);
@@ -164,45 +164,45 @@ String &String::operator<<(const char *a_str)
 
 String &String::operator+=(const String &a_atr)
 {
-    _d += a_atr._d;
+    _mStr += a_atr._mStr;
     return *this;
 }
 String &String::operator+=(const string &a_atr)
 {
-    _d += a_atr;
+    _mStr += a_atr;
     return *this;
 }
 
 String &String::operator+=(char c)
 {
-    _d += c;
+    _mStr += c;
     return *this;
 }
 
 String &String::operator+(char c)
 {
-    _d += c;
+    _mStr += c;
     return *this;
 }
 
 String &String::operator+(const String &a_atr)
 {
-    _d += a_atr._d;
+    _mStr += a_atr._mStr;
     return *this;
 }
 String &String::operator+(const string &a_atr)
 {
-    _d += a_atr;
+    _mStr += a_atr;
     return *this;
 }
 
 String &String::operator>>(string &arg_)
 {
-    arg_ = _d;
+    arg_ = _mStr;
     return *this;
 }
 
-std::string String::make_str(const char *B, const char *E)
+std::string String::MakeStr(const char *B, const char *E)
 {
     std::string Str;
     const char *C = B;
@@ -214,9 +214,9 @@ std::string String::make_str(const char *B, const char *E)
     return Str;
 }
 
-void String::clear()
+void String::Clear()
 {
-    _d.clear();
+    _mStr.clear();
     _arg_position = (string::size_type) 0;
 }
 
@@ -234,7 +234,7 @@ std::string String::datetime(const std::string &str_fmt)
 
 string::size_type String::scan_arg()
 {
-    _arg_position = _d.find('%', 0);
+    _arg_position = _mStr.find('%', 0);
     return _arg_position;
 }
 
@@ -242,7 +242,7 @@ void String::put_arg(const string &aStr)
 {
     if(scan_arg() == std::string::npos)
     {
-        _d.append(aStr);
+        _mStr.append(aStr);
         return;
     }
     
@@ -250,9 +250,9 @@ void String::put_arg(const string &aStr)
 }
 
 // Ce qui fait royalement chier avec les iterateurs des stl, m'est que depuis linenum'iterateur, comment on accede � son conteneur ???????
-bool String::skip_ws(string::iterator &pos)
+bool String::SkipWS(string::iterator &pos)
 {
-    if(pos == _d.end()) // aucun moyen de savoir si linenum'it�rateur en est un de notre conteneur "_str" !!
+    if(pos == _mStr.end()) // aucun moyen de savoir si linenum'it�rateur en est un de notre conteneur "_str" !!
         return false;
     while(isspace(*pos))
         ++pos;
@@ -260,7 +260,7 @@ bool String::skip_ws(string::iterator &pos)
 }
 
 // Ce qui fait royalement chier avec les iterateurs des stl, m'est que depuis linenum'iterateur, comment on accede � son conteneur ???????
-bool String::skip_ws(const char *pos)
+bool String::SkipWS(const char *pos)
 {
     if(!pos)
         return false;
@@ -270,16 +270,16 @@ bool String::skip_ws(const char *pos)
 }
 
 
-string::const_iterator String::scan_to(string::const_iterator start, char c) const
+string::const_iterator String::ScanTo(string::const_iterator start, char c) const
 {
     string::const_iterator p = start;
     ++p;
-    while((p != _d.end()) && (*p != c))
+    while((p != _mStr.end()) && (*p != c))
         ++p;
     return p;
 }
 
-const char *String::scan_to(const char *start, char c) const
+const char *String::ScanTo(const char *start, char c) const
 {
     const char *p = start;
     if(!p)
@@ -291,7 +291,7 @@ const char *String::scan_to(const char *start, char c) const
 }
 
 
-int String::filter(const String::list_t &a_exp)
+int String::filter(const String::List &a_exp)
 {
     if(!a_exp.size())
         return 0;
@@ -304,7 +304,7 @@ int String::filter(const String::list_t &a_exp)
     std::string::size_type pos = 0;
     if(!(*i).empty())
     {
-        pos = _d.find((*i));
+        pos = _mStr.find((*i));
         if(pos != 0) // no match
             return false;
     }
@@ -321,7 +321,7 @@ int String::filter(const String::list_t &a_exp)
                 ++i;
                 continue;
             }
-            pos = _d.find((*i), pos);
+            pos = _mStr.find((*i), pos);
             if(pos != std::string::npos)
             {
                 ++pos;
@@ -334,10 +334,10 @@ int String::filter(const String::list_t &a_exp)
     if(!(*end).empty())
     {
         std::size_t sz = (*end).size();
-        pos            = _d.find((*end), pos);
+        pos            = _mStr.find((*end), pos);
         if(pos != std::string::npos)
         {
-            if((pos + sz) != _d.size())
+            if((pos + sz) != _mStr.size())
                 return false;
         }
     }
@@ -366,16 +366,16 @@ std::string String::SizeF(uint64_t sz)
     
     return us;
 }
-std::string String::extract_surrounded(const std::string &first_lhs, const std::string &first_rhs)
+std::string String::Extract(const std::string &first_lhs, const std::string &first_rhs)
 {
-    std::size_t lhs_pos = _d.find(first_lhs);
+    std::size_t lhs_pos = _mStr.find(first_lhs);
     if(lhs_pos == std::string::npos)
         return "";
-    std::size_t rhs_pos = _d.find(first_rhs);
+    std::size_t rhs_pos = _mStr.find(first_rhs);
     if(rhs_pos == std::string::npos)
         return "";
     
-    return _d.substr(lhs_pos, rhs_pos - lhs_pos);
+    return _mStr.substr(lhs_pos, rhs_pos - lhs_pos);
 }
 
 /*!
@@ -391,7 +391,7 @@ std::string String::extract_surrounded(const std::string &first_lhs, const std::
 std::string String::type_of(string &&func_desc)// , const std::string& _T) -> _T is the class to search.
 {
 //    String               text = std::move(func_desc);
-//    String::word::list_t w;
+//    String::word::List w;
 //
 //    std::size_t count = text.words(w);
 //    for(auto    s: w)
@@ -404,9 +404,9 @@ std::string String::type_of(string &&func_desc)// , const std::string& _T) -> _T
 
 void String::process_arg(String::lambda_fn_t Fn)
 {
-    format_t fmt = {_d};
+    format_t fmt = {_mStr};
     
-    std::string::iterator c = _d.begin() + _arg_position;
+    std::string::iterator c = _mStr.begin() + _arg_position;
     std::string::iterator n, beg, l;
     beg = n = c;
     ++c;
@@ -426,7 +426,7 @@ void String::process_arg(String::lambda_fn_t Fn)
     
     n = c;
     // %[width]:
-    while((n != _d.end()) && isdigit(*n))
+    while((n != _mStr.end()) && isdigit(*n))
         ++n;
     l = n;
     --n;
@@ -445,7 +445,7 @@ void String::process_arg(String::lambda_fn_t Fn)
         fmt.R = fmt.P;
         ++c;
         n = c;
-        while((n != _d.end()) && isdigit(*n))
+        while((n != _mStr.end()) && isdigit(*n))
             ++n;
         l = n;
         --n;
@@ -481,8 +481,8 @@ void String::process_arg(String::lambda_fn_t Fn)
     
     fmt.len = c - beg;
     //std::string ff(_D, _ArgPosition, fmt.distance);
-    _d.erase(_arg_position, fmt.len);
-    _d.insert(_arg_position, Fn(fmt));
+    _mStr.erase(_arg_position, fmt.len);
+    _mStr.insert(_arg_position, Fn(fmt));
     _arg_position = 0;
 }
 
@@ -503,12 +503,38 @@ String &String::operator<<(Color::Type c)
     if(scan_arg() == std::string::npos)
     {
         //std::cerr << __FUNCTION__ << ":\n";
-        _d += Color::Ansi(c);
+        _mStr += Color::Ansi(c);
         return *this;
     }
     //@todo handle color output format!
     return format<std::string>(Color::Ansi(c));
 }
 
+
+String::Format::Format(string &aStr):mStr(aStr) {}
+
+String::Format::~Format()
+{
+    mBuf.clear();
+}
+
+bool String::Format::LocateArg()
+{
+    return  (mArgPos = mStr.find("\\{",0)) != string::npos;
+}
+
+bool String::Format::Input(string aStr)
+{
+
+    mStr.insert(mPosition, aStr);
+
+}
+
+
+bool String::Format::Params::Process()
+{
+
+    return false;
+}
 
 }

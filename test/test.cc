@@ -14,7 +14,7 @@ int Lsc::Test::execute()
 {
     if(HasArgs())
     {
-        std::cout << argv[0] << " ==> arg count: " << argc << "...\n";
+        std::cout << argv[0] << " ==> Arg count: " << argc << "...\n";
         CString Str = argv[1];
         std::cout << "argv[1]:" << Str() << '\n';
         //...
@@ -45,6 +45,7 @@ int Lsc::Test::TheCArg(Lsc::CString aStr)
 {
     return 0;
 }
+
 int Lsc::Test::TestString()
 {
     std::cout << __PRETTY_FUNCTION__ << " - Lsc::String :\n";
