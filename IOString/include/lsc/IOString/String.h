@@ -48,13 +48,14 @@ namespace Lsc {
                 Format& mFormat;
                 string::size_type mBegin = 0,mEnd = 0,mCursor= 0;
                 Params(Format& aFormat): mFormat(aFormat){}
-                bool Process();
+                bool Process(string  aStr);
             };
 
             int mLength = 0;
             std::size_t mPosition = std::string::npos;
             string::size_type mArgPos = string::npos;
-
+            string::iterator mBegin, mEnd;
+            
             Format() = delete;
             ~Format();
             Format(string &aStr);
@@ -267,12 +268,12 @@ namespace Lsc {
          */
         template<typename T>
         String &Arg(T aArg) {
-            Format Fmt(_mStr);
-            if (!Fmt.LocateArg()) return *this;
-
-            std::ostringstream os;
-            os << aArg;
-            _mStr.append(os.str());
+            Format(_mStr).Input(aArg);
+//            if (!Fmt.LocateArg()) return *this;
+//
+//            std::ostringstream os;
+//            os << aArg;
+//            _mStr.append(os.str());
             return *this;
         }
 
@@ -330,12 +331,15 @@ namespace Lsc {
 
         template<typename T>
         String &operator<<(const T &Argument) {
-            if (scan_arg() == std::string::npos) {
-                std::ostringstream os;
-                os << Argument;
-                _mStr += os.str();
-                return *this;
-            }
+            Format(_mStr).Input(Argument);
+            return *this;
+//
+//            if (scan_arg() == std::string::npos) {
+//                std::ostringstream os;
+//                os << Argument;
+//                _mStr += os.str();
+//                return *this;
+//            }
 
             /*
                      process_arg([Argument](const String::format_t& Fmt) -> std::string {

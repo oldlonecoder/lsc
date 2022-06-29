@@ -167,6 +167,7 @@ String &String::operator+=(const String &a_atr)
     _mStr += a_atr._mStr;
     return *this;
 }
+
 String &String::operator+=(const string &a_atr)
 {
     _mStr += a_atr;
@@ -190,6 +191,7 @@ String &String::operator+(const String &a_atr)
     _mStr += a_atr._mStr;
     return *this;
 }
+
 String &String::operator+(const string &a_atr)
 {
     _mStr += a_atr;
@@ -511,7 +513,16 @@ String &String::operator<<(Color::Type c)
 }
 
 
-String::Format::Format(string &aStr):mStr(aStr) {}
+
+
+// ------------------------------ String::Format ----------------------------------------
+String::Format::Format(string &aStr):mStr(aStr)
+{
+    if(!LocateArg()) return;
+    
+    
+    
+}
 
 String::Format::~Format()
 {
@@ -520,23 +531,31 @@ String::Format::~Format()
 
 bool String::Format::LocateArg()
 {
-    return  (mArgPos = mStr.find("\\{",0)) != string::npos;
+    mPosition = mStr.find("\\{",0);
+    mBegin = mStr.begin() + mPosition;
+    auto EndPos = mStr.find('}',mPosition);
+    if(EndPos == string::npos) return false; // Missing closing brace.
+    mEnd = mStr.begin() + EndPos;
+    return true;
+    
 }
 
 bool String::Format::Input(string aStr)
 {
-
-    mStr.insert(mPosition, aStr);
-
+    return Params(*this).Process(aStr);
 }
 
 
-bool String::Format::Params::Process()
+bool String::Format::Params::Process(string  aStr)
 {
 
-    std::cout << __PRETTY_FUNCTION__ << " - Format::mPosition:" << mFormat.mPosition << 'n';
-    std::cout << "Format::mArgPosition: " << mFormat.mArgPos << '\n';
+    std::cout << __PRETTY_FUNCTION__ << "\n - Format::mPosition:" << mFormat.mPosition << '\n';
+    std::cout << " Format::Params Str: '" << string(mFormat.mBegin, mFormat.mEnd+1) << "'\n";
     return false;
 }
+
+//----------------------- String::Format End -----------------------------------------------------------
+
+
 
 }

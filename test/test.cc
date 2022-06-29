@@ -51,7 +51,7 @@ int Lsc::Test::TestString()
     std::cout << __PRETTY_FUNCTION__ << " - Lsc::String :\n";
     String Str = "    Hello, Lsc::World!\n";
     std::cout << Str() << '\n';
-    Str = "    Arg: %d";
+    Str = " Arg format: \\{<04.2f}\n  Looks like we will have colours? { Such as  \"\\{C:Lime} Lime Color!\" }\n";
     Str << 42;
     std::cout << Str() << '\n';
     return 0;
@@ -75,5 +75,5 @@ int Lsc::Test::CStringTokenize()
         std::cout << "Token: '" << Token() << "'\n";
     }
     
-    return 0;
+    return TestString();
 }
