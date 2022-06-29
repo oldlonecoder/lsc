@@ -39,7 +39,7 @@ namespace Lsc {
         struct Format {
             string &mStr; ///< Mandatory constructor immediate assign
             string mBuf; ///< Working internal temp buffer
-            struct Params {
+            struct Param {
                 char mJustifyCode = 0;///<  { none,  <, ^, > }.
                 int mWidth = 0; ///< Padding Width.
                 char mFilling = 0; ///< Filling char. (or numerical value)
@@ -47,7 +47,7 @@ namespace Lsc {
                 char mGroupSep = 0x32; ///< Padding group separator character. (default is space ' ').
                 Format& mFormat;
                 string::size_type mBegin = 0,mEnd = 0,mCursor= 0;
-                Params(Format& aFormat): mFormat(aFormat){}
+                Param(Format& aFormat): mFormat(aFormat){}
                 bool Process(string  aStr);
             };
 

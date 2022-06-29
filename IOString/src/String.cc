@@ -542,15 +542,15 @@ bool String::Format::LocateArg()
 
 bool String::Format::Input(string aStr)
 {
-    return Params(*this).Process(aStr);
+    return Param(*this).Process(aStr);
 }
 
 
-bool String::Format::Params::Process(string  aStr)
+bool String::Format::Param::Process(string  aStr)
 {
 
     std::cout << __PRETTY_FUNCTION__ << "\n - Format::mPosition:" << mFormat.mPosition << '\n';
-    std::cout << " Format::Params Str: '" << string(mFormat.mBegin, mFormat.mEnd+1) << "'\n";
+    std::cout << " Format::Param Str: '" << string(mFormat.mBegin, mFormat.mEnd+1) << "'\n";
     return false;
 }
 
