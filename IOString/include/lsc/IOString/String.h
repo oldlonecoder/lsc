@@ -36,10 +36,10 @@ namespace Lsc {
         //char* __buff = nullptr;
         friend class winbuffer;
 
-        struct Format {
+        struct IOSTR_LIB Format {
             string &mStr; ///< Mandatory constructor immediate assign
             string mBuf; ///< Working internal temp buffer
-            struct Param {
+            struct IOSTR_LIB Param {
                 char mJustifyCode = 0;///<  { none,  <, ^, > }.
                 int mWidth = 0; ///< Padding Width.
                 char mFilling = 0; ///< Filling char. (or numerical value)
