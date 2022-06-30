@@ -550,15 +550,24 @@ bool String::Format::Input(string aStr)
  *
  * <ol>
  *     @li Justify
- *     @li Padding Char.
+ *     @li Padding Character
  *     @li Width/Length
- *     @li Floating point
  *     @li Decimal precision
  *     @li Type modifiers:
  *     <ul>
  *         @li l : Long (32bits) modifier
  *         @li d : Base 10 signed integer ( ld : long base 10 32 bits integer modifier )
- *         @li
+ *         @li f : floating point
+ *         @li b : binary representation of byte(s) value.
+ *         @li s : string
+ *         @li c : ascii character
+ *     </ul>
+ *     @li Suplementary encodings:
+ *     <ul>
+ *         @li fg: Character Color Name
+ *         @li bg: Background Color Name
+ *         @li ...
+ *     </ul>
  * </ul>
  * @param aStr
  * @return
