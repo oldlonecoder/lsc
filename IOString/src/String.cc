@@ -545,7 +545,24 @@ bool String::Format::Input(string aStr)
     return Param(*this).Process(aStr);
 }
 
-
+/*!
+ * @brief Format specifier in order:
+ *
+ * <ol>
+ *     @li Justify
+ *     @li Padding Char.
+ *     @li Width/Length
+ *     @li Floating point
+ *     @li Decimal precision
+ *     @li Type modifiers:
+ *     <ul>
+ *         @li l : Long (32bits) modifier
+ *         @li d : Base 10 signed integer ( ld : long base 10 32 bits integer modifier )
+ *         @li
+ * </ul>
+ * @param aStr
+ * @return
+ */
 bool String::Format::Param::Process(string  aStr)
 {
 
