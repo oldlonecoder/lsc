@@ -529,56 +529,37 @@ String::Format::~Format()
     mBuf.clear();
 }
 
-bool String::Format::LocateArg()
-{
-    mPosition = mStr.find("\\{",0);
-    mBegin = mStr.begin() + mPosition;
-    auto EndPos = mStr.find('}',mPosition);
-    if(EndPos == string::npos) return false; // Missing closing brace.
-    mEnd = mStr.begin() + EndPos;
-    return true;
-    
-}
-
-bool String::Format::Input(string aStr)
-{
-    return Param(*this).Process(aStr);
-}
 
 /*!
- * @brief Format specifier in order:
+ * @brief Initialize the format start and end location into the string.
+ * @return true if the string has proper format delimiters; false otherwise.
  *
- * <ol>
- *     @li Justify
- *     @li Padding Character
- *     @li Width/Length
- *     @li Decimal precision
- *     @li Type modifiers:
- *     <ul>
- *         @li l : Long (32bits) modifier
- *         @li d : Base 10 signed integer ( ld : long base 10 32 bits integer modifier )
- *         @li f : floating point
- *         @li b : binary representation of byte(s) value.
- *         @li s : string
- *         @li c : ascii character
- *     </ul>
- *     @li Suplementary encodings:
- *     <ul>
- *         @li fg: Character Color Name
- *         @li bg: Background Color Name
- *         @li ...
- *     </ul>
- * </ul>
- * @param aStr
- * @return
+ * @author oldlonecoder (lussier.serge@gmail.com).
  */
-bool String::Format::Param::Process(string  aStr)
+bool String::Format::Init()
 {
-
-    std::cout << __PRETTY_FUNCTION__ << "\n - Format::mPosition:" << mFormat.mPosition << '\n';
-    std::cout << " Format::Param Str: '" << string(mFormat.mBegin, mFormat.mEnd+1) << "'\n";
-    return false;
+    mBegin = mPosition = mStr.find("\\{",0);
+    mEnd = mStr.find('}',mPosition);
+    if(mEnd == string::npos) return false; // Missing closing brace.
+    mLength = mEnd - mBegin;
+    return true;
 }
+
+
+char String::Format::Justify(string::iterator &it)
+{
+    mJustifyCode = ' ';
+    return mJustify;
+}
+int String::Format::Width(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::iterator &it)
+{
+    return 0;
+}
+int String::Format::LeadingZero(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::iterator &it)
+{
+    return 0;
+}
+
 
 //----------------------- String::Format End -----------------------------------------------------------
 
