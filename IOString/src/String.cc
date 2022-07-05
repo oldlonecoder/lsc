@@ -518,7 +518,7 @@ String &String::operator<<(Color::Type c)
 // ------------------------------ String::Format ----------------------------------------
 String::Format::Format(string &aStr):mStr(aStr)
 {
-    if(!LocateArg()) return;
+    if(!Init()) return;
     
     
     
@@ -542,6 +542,12 @@ bool String::Format::Init()
     mEnd = mStr.find('}',mPosition);
     if(mEnd == string::npos) return false; // Missing closing brace.
     mLength = mEnd - mBegin;
+    mCursor = mStr.begin() + mPosition;
+    
+    std::cout << __PRETTY_FUNCTION__ << " Cursor on '" << *mCursor << "'\n    Advancing past \\{ :\n";
+    ++mCursor; ++mCursor; // Or mCursor += 2;
+    std::cout << "    Now Cursor on '" << *mCursor << "'\n";
+    Justify(mCursor);
     return true;
 }
 
@@ -549,13 +555,20 @@ bool String::Format::Init()
 char String::Format::Justify(string::iterator &it)
 {
     mJustifyCode = ' ';
-    return mJustify;
+    if(mStr.find(*mCursor, 0) != std::string::npos)
+        mJustifyCode = *mCursor++;
+    
+    std::cout << __PRETTY_FUNCTION__  << " - Justfy Code: '" << mJustifyCode <<"'\n";
+    std::cout << "    Now Cursor on '" << *mCursor << "'\n";
+    return mJustifyCode;
 }
-int String::Format::Width(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::iterator &it)
+
+int String::Format::Width(std::string::iterator &it)
 {
     return 0;
 }
-int String::Format::LeadingZero(std::basic_string<char, std::char_traits<char>, std::allocator<char>>::iterator &it)
+
+int String::Format::LeadingZero(std::string::iterator &it)
 {
     return 0;
 }

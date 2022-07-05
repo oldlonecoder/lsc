@@ -75,9 +75,10 @@ class IOSTR_LIB String
         char              mFilling      = 0; ///< Filling char. (or numerical value)
         int               mPaddingWidth = 0; ///< Padding Group Length/Width ( such as "08b" )
         char              mGroupSep     = 0x32; ///< Padding group separator character. (default is space ' ').
-        string::size_type mBegin        = 0, mEnd = 0, mCursor = 0;
+        string::size_type mBegin        = 0, mEnd = 0;
         string::size_type mLength       = 0;
         std::size_t       mPosition     = std::string::npos;
+        string::iterator  mCursor;
         Format() = delete;
         ~Format();
         explicit Format(string &aStr);
