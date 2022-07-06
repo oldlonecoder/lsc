@@ -41,11 +41,25 @@ class IOSTR_LIB String
     /*!
      * @brief Format specifier in order:
      *
-     * <ol>
-     *     @li Justify
-     *     @li Padding Character
-     *     @li Width/Length
-     *     @li Decimal precision
+     * <ul>
+     *     @li Justify           { '<', '>', '^' }
+     *     @li Box-formatting    { '[]' }
+     *         <ul>
+     *             @li 'h:integer' : Box height ( or number of lines including borders ) defaults to 0 (zero - no height)
+     *             @li 'w:integer' : Box width
+     *             @li '^'         : Top Justify inner content
+     *             @li '_'         : Bottom Justify inner content
+     *             @li '-'         : Vertical Center Justify inner content
+     *             @li '|'         : Horizontally centered inner content
+     *             @li '='         : Line-Justify width inner center
+     *             @li '<'         : justify to Left inner content
+     *             @li '>'         : Justify to right inner content
+     *             @li 'f'         : Draw the box frame ( as of this version, only single line UTF-8 box chars )
+     *             @li ';'         : Mandatory separators between params (and args)
+     *         </ul>
+     *
+     *     @li Width/Length      { integer }
+     *     @li Decimal precision { .integer }
      *     @li Type modifiers:
      *     <ul>
      *         @li l : Long (32bits) modifier
@@ -57,7 +71,7 @@ class IOSTR_LIB String
      *     </ul>
      *     @li Suplementary encodings:
      *     <ul>
-     *         @li fg: Character Color Name
+     *         @li fg: Character Color Name / or #0xRGB
      *         @li bg: Background Color Name
      *         @li ...
      *     </ul>
