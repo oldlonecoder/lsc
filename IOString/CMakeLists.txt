@@ -23,8 +23,9 @@ add_library(
 		include/lsc/IOString/CString.h
 		src/CString.cc include/lsc/IOString/CString.h
         src/Encoding/Format.cc
+		src/Message.cc
+		include/lsc/IOString/Message.h
 )
-
 
 
 target_compile_definitions(${TargetName} PUBLIC "${TargetName}_DEBUG=$<CONFIG:Debug>")
