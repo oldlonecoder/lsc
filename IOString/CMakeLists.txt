@@ -25,6 +25,8 @@ add_library(
         src/Encoding/Format.cc
 		src/Message.cc
 		include/lsc/IOString/Message.h
+        src/Expect.cc 
+        include/lsc/IOString/Expect.h
 )
 
 
