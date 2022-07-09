@@ -139,11 +139,14 @@
     <ClInclude Include="include\lsc\IOString\CString.h" />
     <ClInclude Include="include\lsc\IOString\dlexport.h" />
     <ClInclude Include="include\lsc\IOString\Encoding\Color.h" />
+    <ClInclude Include="include\lsc\IOString\Message.h" />
     <ClInclude Include="include\lsc\IOString\String.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CString.cc" />
     <ClCompile Include="src\Encoding\Color.cc" />
+    <ClCompile Include="src\Encoding\Format.cc" />
+    <ClCompile Include="src\Message.cc" />
     <ClCompile Include="src\String.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
