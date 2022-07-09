@@ -30,6 +30,9 @@
     <ClInclude Include="include\lsc\IOString\String.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="include\lsc\IOString\Message.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Encoding\Color.cc">
@@ -39,6 +42,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="src\String.cc">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Message.cc">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Encoding\Format.cc">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
