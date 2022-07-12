@@ -57,8 +57,10 @@ int Lsc::Test::TestString()
     Str = " Arg format: \\{^[0|8]b} \n  Looks like we will have colours? { Such as  \"\\{C:Lime} Lime Color!\" }\n";
     Str << 42;
     std::cout << Str() << '\n';
-    return 0;
     
+    auto R = TestExpect();
+    auto C = *R;
+    std::cout << "R = " << Message::CodeText(C);
     return 0;
 }
 int Lsc::Test::TestCString()

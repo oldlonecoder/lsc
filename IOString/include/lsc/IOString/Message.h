@@ -107,6 +107,7 @@ public:
     Message::Type MessageType() { return _mType; }
     static std::string CodeText(Message::Code c);
     static std::string TypeText(Message::Type t);
+    Message::Code CodeEnum() { return _mCode; }
 
 private:
     Message::Code _mCode = Message::Code::Hello;
