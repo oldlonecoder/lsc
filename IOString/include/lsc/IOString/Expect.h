@@ -9,104 +9,104 @@
 namespace Lsc
 {
 
-template<typename T> IOSTR_LIB class Expect
+template<typename T = Message::Code>  class IOSTR_LIB Expect
 {
     
-   std::any value;
-    bool state = false;
+    std::any _mA;
+    bool _mSt = false;
 
 public:
-    expect() = default;
+    Expect() = default;
     
-    expect(rem &m)
+    Expect(Message &m)
     {
-        //rem msg = m;
-        value = m;
-        state   = false;
+        //Message msg = m;
+        _mA = m;
+        _mSt   = false;
     }
     
-    expect(const T &v)
+    Expect(const T &v)
     {
-        value = v; // Must remove const ?
-        state   = true;
+        _mA = v; // Must Messageove const ?
+        _mSt   = true;
     }
     
-    expect(expect &&e) noexcept
+    Expect(Expect &&e) noexcept
     {
-        value = std::move(e.value);
-        state   = e.state;
+        _mA = std::move(e._mA);
+        _mSt   = e._mSt;
     }
     
-    expect(const expect &e)
+    Expect(const Expect &e)
     {
-        state = e.state;
-        value = e.value;
+        _mSt = e._mSt;
+        _mA = e._mA;
     }
     
-    expect &operator=(rem &m)
+    Expect &operator=(Message &m)
     {
-        value.reset();
-        state  = false;
-        rem msg = m;
-        value = std::move(msg);
+        _mA.reset();
+        _mSt  = false;
+        Message msg = m;
+        _mA = std::move(msg);
         return *this;
     }
     
-    expect &operator=(expect &&e) noexcept
+    Expect &operator=(Expect &&e) noexcept
     {
-        value.reset();
-        value = std::move(e.value);
-        state = std::move(e.state);
+        _mA.reset();
+        _mA = std::move(e._mA);
+        _mSt = std::move(e._mSt);
         return *this;
     }
     
-    expect &operator=(const expect &e)
+    Expect &operator=(const Expect &e)
     {
         if(&e == this)
             return *this;
-        value.reset();
-        value = e.value;
-        state = e.state;
+        _mA.reset();
+        _mA = e._mA;
+        _mSt = e._mSt;
         return *this;
     }
     
-    expect &operator=(const T &v)
+    Expect &operator=(const T &v)
     {
         //        /if(mF)
-        value.reset();
-        value = v;
-        state = true;
+        _mA.reset();
+        _mA = v;
+        _mSt = true;
         return *this;
     }
     
     explicit operator bool() const
-    { return state; }
+    { return _mSt; }
     
-    rem operator()()
+    Message operator()()
     {
-        if(!state)
-            return std::any_cast<rem&>(value);
-        return std::any_cast<rem>(value);
+        if(!_mSt)
+            return std::any_cast<Message&>(_mA);
+        return std::any_cast<Message>(_mA);
     }
     
     auto &operator*()
     {
-        if(!state)
+        if(!_mSt)
         {
-            value.reset();
-            throw rem( rem::type::err ) << ": " << " - Expected value was not returned. >>\n >> ";
+            _mA.reset();
+            throw Message( Message::Type::Err ) << ": " << " - Expected _mA was not returned. >>\n >> ";
         }
 
-        return std::any_cast<T&>(value);
+        return std::any_cast<T&>(_mA);
     }
     
     void reset()
     {
-        value.reset();
-        state = false;
+        _mA.reset();
+        _mSt = false;
     }
     
-    ~expect()
+    ~Expect()
     {
         //Reset();
     }
