@@ -5,6 +5,7 @@
 #pragma once
 
 #include <lsc/IOString/CArguments.h>
+#include <lsc/IOString/Expect.h>
 
 namespace Lsc
 {
@@ -29,6 +30,7 @@ public:
     [[nodiscard]] int TestString();
     [[nodiscard]] int TestCString();
     [[nodiscard]] int CStringTokenize();
+    [[nodiscard]] Expect<> TestExpect();
     
 };
 

@@ -5,6 +5,9 @@
 #include "test.h"
 #include <lsc/IOString/String.h>
 
+
+
+
 Lsc::Test::Test(int argc, char **argv) : argc(argc), argv(argv)
 {
 
@@ -76,4 +79,9 @@ int Lsc::Test::CStringTokenize()
     }
     
     return TestString();
+}
+
+Lsc::Expect<> Lsc::Test::TestExpect()
+{
+    return Message::Code::Hello;
 }
