@@ -5,6 +5,7 @@
 #pragma once
 
 #include <lsc/IOString/CArguments.h>
+
 #include <lsc/IOString/Expect.h>
 
 namespace Lsc

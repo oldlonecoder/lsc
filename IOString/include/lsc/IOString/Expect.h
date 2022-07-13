@@ -9,7 +9,7 @@
 namespace Lsc
 {
 
-template<typename T = Message::Code>  class IOSTR_LIB Expect
+template<typename T = Message::Code>  class  Expect
 {
     
     std::any _mA;
@@ -47,8 +47,8 @@ public:
     {
         _mA.reset();
         _mSt  = false;
-        Message msg = m;
-        _mA = std::move(msg);
+        //Message msg = m;
+        _mA = m;
         return *this;
     }
     
