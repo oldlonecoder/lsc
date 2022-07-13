@@ -89,7 +89,7 @@ public:
         return std::any_cast<Message>(_mA);
     }
     
-    auto &operator*()
+    auto operator*()
     {
         if(!_mSt)
         {
@@ -97,7 +97,7 @@ public:
             throw Message( Message::Type::Err ) << ": " << " - Expected _mA was not returned. >>\n >> ";
         }
 
-        return std::any_cast<T&>(_mA);
+        return std::any_cast<T>(_mA);
     }
     
     void reset()

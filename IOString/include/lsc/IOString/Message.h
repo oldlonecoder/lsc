@@ -108,7 +108,7 @@ public:
     static std::string CodeText(Message::Code c);
     static std::string TypeText(Message::Type t);
     Message::Code CodeEnum() { return _mCode; }
-
+    static void InitCodes();
 private:
     Message::Code _mCode = Message::Code::Hello;
     Message::Type _mType = Message::Type::Output;
@@ -118,7 +118,7 @@ private:
     static std::vector<std::string>      types_ansi256_attr;
     static std::vector<std::string>      codes_ansi256_attr;
     friend class Logger;
-    static void InitCodes();
+    
 };
 
 } // Lsc

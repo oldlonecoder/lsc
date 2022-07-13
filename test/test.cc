@@ -16,6 +16,8 @@ namespace Lsc
 
     int Test::execute()
     {
+        Message::InitCodes();
+
         if (HasArgs())
         {
             std::cout << argv[0] << " ==> Arg count: " << argc << "...\n";
