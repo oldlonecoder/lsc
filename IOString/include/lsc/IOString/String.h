@@ -396,15 +396,15 @@ public:
     template<typename T>
     String &operator<<(const T &Argument)
     {
-        Format(_mStr).Input(Argument);
-        return *this;
-        //
-        //            if (scan_arg() == std::string::npos) {
-        //                std::ostringstream os;
-        //                os << Argument;
-        //                _mStr += os.str();
-        //                return *this;
-        //            }
+        //Format(_mStr).Input(Argument);
+        //return *this;
+        
+        if (scan_arg() == std::string::npos) {
+            std::ostringstream os;
+            os << Argument;
+            _mStr += os.str();
+            return *this;
+        }
         
         /*
                  process_arg([Argument](const String::format_t& Fmt) -> std::string {
@@ -426,8 +426,7 @@ public:
         return format(Argument);
     }
     
-    template<typename T>
-    String &hexadecimal(T &v)
+    template<typename T> String &hexadecimal(T &v)
     {
         std::stringstream is(_mStr.c_str() + 2);
         //std::cerr << " this:'" << _D.c_str()+2 << "' -> ";
