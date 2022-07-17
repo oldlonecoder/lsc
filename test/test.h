@@ -6,7 +6,7 @@
 
 #include <lsc/IOString/CArguments.h>
 
-#include <lsc/IOString/Expect.h>
+#include <lsc/IOString/Result.h>
 
 namespace Lsc
 {
@@ -14,25 +14,19 @@ namespace Lsc
 class Test
 {
     
-    
+    CArgumentList<Test> *_mpArgs = nullptr; ///< Future tests...
     char **argv = nullptr;
     int argc = 0;
 public:
     Test() = default;
     Test(int argc, char **argv);
-    ~Test() = default;
+    ~Test();
     
-    int execute();
+    Result<> execute();
     
     [[nodiscard]] bool HasArgs() const;
-    [[nodiscard]] int InitCArgumentList();
-    
-    [[nodiscard]] int TheCArg(CString aStr);
-    [[nodiscard]] int TestString();
-    [[nodiscard]] int TestCString();
-    [[nodiscard]] int CStringTokenize();
-    [[nodiscard]] Expect<> TestExpect();
-    
+    [[nodiscard]] Result<> InitArguments();
+        
 };
 
 }

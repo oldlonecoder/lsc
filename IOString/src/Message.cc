@@ -10,6 +10,11 @@ namespace Lsc
 
 int Message::_mcIndent = 0;
 
+Message::List MessagesList;
+
+
+
+
 std::vector<std::string_view> Message::types_text=
 {
     {"error"},
@@ -137,6 +142,11 @@ void Message::InitCodes()
     };
 }
 
+std::string Message::operator()()
+{
+    return CC();
+}
+
 /*
  *
  *  <div class="nom de la classe"...> contenu </div>
@@ -201,7 +211,7 @@ void Message::Init()
 }
 std::string Message::CodeText(Message::Code c)
 {
-    std::string str;
+    String str;
     if(c == Message::Code::Enter)
     {
         ++Message::_mcIndent;
@@ -216,8 +226,8 @@ std::string Message::CodeText(Message::Code c)
             //...
         }
         
-    str += Message::codes_ansi256_attr[static_cast<int8_t>(c)];
-    str += Message::codes_text[static_cast<int8_t>(c)];
+    str << Message::codes_ansi256_attr[static_cast<int8_t>(c)];
+    str << Message::codes_text[static_cast<int8_t>(c)];
     return str;
 }
 
@@ -227,6 +237,80 @@ std::string Message::TypeText(Message::Type t)
     str += Message::types_ansi256_attr[static_cast<int8_t>(t)];
     str += Message::types_text[static_cast<int8_t>(t)];
     return str;
+}
+
+
+
+
+Message& Message::Error(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Err, std::move(SL)});
+    return MessagesList.back();
+}
+
+
+Message& Message::Warning(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Warning, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Infomation(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Info, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Exception(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Exception, std::move(SL)});
+    return MessagesList.back();;
+}
+
+Message& Message::Fatal(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Fatal, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Status(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Status, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Debug(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Debug, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Output(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Output, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Comment(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Comment, std::move(SL)});
+    return MessagesList.back();
+}
+
+Message& Message::Syntax(Source::Location&& SL)
+{
+    MessagesList.push_back({Message::Type::Syntax, std::move(SL)});
+    return MessagesList.back();
+}
+
+int Message::Clear(std::function<void(Message& M)> aFp)
+{
+    int sz = MessagesList.size();
+    if(MessagesList.empty()) return sz;
+    for(auto &M : MessagesList)
+        if(aFp) aFp(M);
+    MessagesList.clear();
+    return sz;
 }
 
 }

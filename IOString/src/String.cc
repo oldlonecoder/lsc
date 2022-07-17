@@ -513,7 +513,4 @@ String &String::operator<<(Color::Type c)
 }
 
 
-
-
-
 }

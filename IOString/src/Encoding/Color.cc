@@ -277,20 +277,10 @@ static std::vector<std::string> html_colors =
 
 std::string Color::Ansi(Color::Type C_, Color::Type BG_OR_OOB)
 {
-    if(C_ == Reset)
-    {
-        return "\033[0m";
-    }
+    if(C_ == Reset){ return "\033[0m"; }
+    
     String str = "\033[38;5;%dm";
-    
-    if(BG_OR_OOB != Color::OOB)
-        str += "\033[48;5;%dm";
-    
     str << static_cast<int>(C_);
-    
-    if(BG_OR_OOB != Color::OOB)
-        str << static_cast<int>(BG_OR_OOB);
-    
     return str();
 }
 

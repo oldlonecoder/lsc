@@ -36,8 +36,10 @@ class IOSTR_LIB Message
     Color::Format _mFormat = Color::Format::Ansi256;
     std::vector<std::string> _mComponents;
     static int _mcIndent ;
+
 public:
-    
+    using List = std::vector<Message>;
+
     enum class Type : int8_t
     {
         Err,
@@ -93,13 +95,13 @@ public:
     Message& operator << (Message::Code c_);
     Message& operator << (const String& txt_);
     template<typename T> Message& operator<<(const T& arg_)
-    {
-        
+    { 
          String str;
          str << arg_;
          _mComponents.push_back(str());
         return *this;
     }
+    std::string operator()();
     std::string CC();
     std::string Text() { return _mText(); }
     static void Init();
@@ -109,6 +111,29 @@ public:
     static std::string TypeText(Message::Type t);
     Message::Code CodeEnum() { return _mCode; }
     static void InitCodes();
+
+
+//-----------------------------------------------------------------------------------
+#pragma region STATIC_CONSTRUCTS_TYPES
+    static Message& Error(Source::Location&& SL = {});
+    static Message& Warning(Source::Location&& SL = {});
+    static Message& Infomation(Source::Location&& SL = {});
+    static Message& Exception(Source::Location&& SL = {});
+    static Message& Fatal(Source::Location&& SL = {});
+    static Message& Status(Source::Location&& SL = {});
+    static Message& Debug(Source::Location&& SL = {});
+    static Message& Output(Source::Location&& SL = {});
+    static Message& Comment(Source::Location&& SL = {});
+    static Message& Syntax(Source::Location&& SL = {});
+#pragma endregion STATIC_CONSTRUCTS_TYPES
+
+#pragma region STATIC_CONSTRUCT_CODES
+//... Not useed yet
+#pragma endregion STATIC_CONSTRUCTS_CODES
+//-----------------------------------------------------------------------------------
+
+static int Clear(std::function<void(Message& M)> aFp);
+
 private:
     Message::Code _mCode = Message::Code::Hello;
     Message::Type _mType = Message::Type::Output;

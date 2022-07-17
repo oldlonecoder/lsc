@@ -27,7 +27,7 @@ public:
     
     Expect(const T &v)
     {
-        _mA = v; // Must Messageove const ?
+        _mA = v; // Must be const ?
         _mSt   = true;
     }
     
@@ -94,7 +94,7 @@ public:
         if(!_mSt)
         {
             _mA.reset();
-            throw Message( Message::Type::Err ) << ": " << " - Expected _mA was not returned. >>\n >> ";
+            throw Message( Message::Type::Err ) << ": " << " - Expected value type failed assign.";
         }
 
         return std::any_cast<T>(_mA);
