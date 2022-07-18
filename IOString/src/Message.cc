@@ -24,7 +24,7 @@ std::vector<std::string_view> Message::types_text=
     {"fatal"},
     {"status"},
     {"debug"  },
-    {"output"},
+    {"     "},
     {"comment"},
     {"syntax error"}
 };
