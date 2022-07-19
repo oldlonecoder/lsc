@@ -50,4 +50,4 @@ target_link_libraries(${PROJECT_NAME} IOString)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
 
-#INCLUDE(Tests.cmake)
+INCLUDE(Tests.cmake)

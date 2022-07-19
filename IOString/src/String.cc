@@ -502,14 +502,23 @@ std::string String::format_t::operator()()
 
 String &String::operator<<(Color::Type c)
 {
+    if(c == Color::OOB)
+    {
+        _mBacColor = true;
+        return *this;
+    }
+
     if(scan_arg() == std::string::npos)
     {
         //std::cerr << __FUNCTION__ << ":\n";
-        _mStr += Color::Ansi(c);
+        _mStr += _mBacColor ? Color::AnsiBack(c) : Color::Ansi(c);
+        _mBacColor = false;
         return *this;
     }
     //@todo handle color output format!
-    return format<std::string>(Color::Ansi(c));
+    [[discard]]format<std::string>(_mBacColor ? Color::AnsiBack(c) : Color::Ansi(c));
+    _mBacColor = false;
+    return *this;
 }
 
 

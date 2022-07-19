@@ -34,7 +34,7 @@ class IOSTR_LIB String
     std::string            _mStr;///< Private/Encapsulated std::string instance.
     std::string::size_type _arg_position = 0; // Initialize Argument index position...
     uint8_t                _mPrecision   = 4;
-    
+    bool                   _mBacColor = false;
     //char* __buff = nullptr;
     friend class winbuffer;
     

@@ -275,14 +275,28 @@ static std::vector<std::string> html_colors =
         
                                     };
 
-std::string Color::Ansi(Color::Type C_, Color::Type BG_OR_OOB)
+std::string Color::Ansi(Color::Type aForeground, Color::Type aBackground)
 {
-    if(C_ == Reset){ return "\033[0m"; }
+    if(aForeground == Reset){ return "\033[0m"; }
     
     String str = "\033[38;5;%dm";
-    str << static_cast<int>(C_);
+    str << static_cast<int>(aForeground);
+
+    if(aBackground != Color::OOB)
+    {
+        str += "\033[48;5;%dm";
+        str << static_cast<int>(aBackground);
+    }
     return str();
 }
+
+std::string Color::AnsiBack(Color::Type aColorName)
+{
+    String str = "\033[48;5;%dm";
+    str << static_cast<int>(aColorName);
+    return str();
+}
+
 
 // color_data
 static std::vector<ColorData> color_db = {

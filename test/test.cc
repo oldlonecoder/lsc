@@ -27,7 +27,7 @@ Result<> Test::execute()
     if (HasArgs())
     {
         String Str;
-        Str << Color::BlueViolet <<  argv[0] << Color::Yellow << " ==> Arg count: " << Color::CadetBlue2 << argc << "...\n";
+        Str << Color::OOB << Str << Color::BlueViolet <<  argv[0] << Color::Yellow << " ==> Arg count: " << Color::CadetBlue2 << argc << "...\n";
         Str << Color::White << argv[1];
         Message::Debug(SourceLocation) << Str();
         //...
