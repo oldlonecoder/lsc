@@ -5,8 +5,8 @@
 //#ifndef LSC_MESSAGE_H
 //#define LSC_MESSAGE_H
 #pragma once
-#include <lsc/IOString/String.h>
-#include <lsc/IOString/Encoding/Color.h>
+#include <Lsc/IOString/String.h>
+#include <Lsc/IOString/Encoding/Color.h>
 
 namespace Lsc
 {

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16..3.20 FATAL_ERROR)
 # Project name
 
-project(IOString VERSION 0.0.1 LANGUAGES CXX)
+project(IOCon VERSION 0.0.1 LANGUAGES CXX)
 
 
 include(GNUInstallDirs)
@@ -14,20 +14,8 @@ SET(FRAMEWORK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(
         ${PROJECT_NAME}
         SHARED
-        include/${FrameWorkName}/${PROJECT_NAME}/String.h
-        src/String.cc
-		include/Lsc/IOString/CArguments.h
-		src/Encoding/Color.cc
-		include/Lsc/IOString/Encoding/Color.h
-		src/CString.cc
-		include/Lsc/IOString/CString.h
-		src/CString.cc 
-        include/Lsc/IOString/CString.h
-        src/Encoding/Format.cc
-		src/Message.cc
-		include/Lsc/IOString/Message.h
-        src/Expect.cc 
-        include/Lsc/IOString/Expect.h
+        include/Lsc/IOCon/IOCon.h 
+        src/IOCon.cc
 )
 
 
@@ -43,12 +31,22 @@ IF( EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" )
 			)
 ENDIF()
 
+# Only way I found for assemble each of the subproject's include dir.
+list(
+    APPEND INCLUDE_PATHS
+    "${IOSTR_INCLUDE_DIR}"
+#    "${CLOG_INCLUDE_DIR}"
+    "${IOCON_INCLUDE_DIR}"
+#    "${DLLOADER_INCLUDE_DIR}"
+#    "${XIO_INCLUDE_DIR}"
+)
+
 target_include_directories(${TargetName} PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${INCLUDE_PATHS}"
         $<INSTALL_INTERFACE:include/${FrameWorkName}/${PROJECT_NAME}>
         )
 
-target_link_libraries(${TargetName} ${CMAKE_DL_LIBS} sqlite3)
+target_link_libraries(${TargetName} ${CMAKE_DL_LIBS} IOString sqlite3)
 
 
 

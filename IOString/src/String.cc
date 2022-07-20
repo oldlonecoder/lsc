@@ -2,7 +2,7 @@
 // Created by oldlonecoder on 21-11-20.
 //
 
-#include <lsc/IOString/String.h>
+#include <Lsc/IOString/String.h>
 #ifdef _WIN32
     #include <Winsock2.h> 
 #else
@@ -516,7 +516,7 @@ String &String::operator<<(Color::Type c)
         return *this;
     }
     //@todo handle color output format!
-    [[discard]]format<std::string>(_mBacColor ? Color::AnsiBack(c) : Color::Ansi(c));
+    format<std::string>(_mBacColor ? Color::AnsiBack(c) : Color::Ansi(c));
     _mBacColor = false;
     return *this;
 }

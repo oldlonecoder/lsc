@@ -3,7 +3,7 @@
 //
 
 #include "test.h"
-#include <lsc/IOString/String.h>
+#include <Lsc/IOString/String.h>
 
 
 namespace Lsc

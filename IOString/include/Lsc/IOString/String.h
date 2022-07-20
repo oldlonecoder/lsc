@@ -6,7 +6,7 @@
 //#define VXIO_FRAMEWORK_IOSTR_H
 #pragma once
 
-#include <lsc/IOString/dlexport.h>
+#include <Lsc/IOString/dlexport.h>
 #include <iostream>
 #include <cstring>
 #include <sstream>
@@ -22,7 +22,7 @@
 #include <string>
 #include <string_view>
 
-#include <lsc/IOString/Encoding/Color.h>
+#include <Lsc/IOString/Encoding/Color.h>
 
 namespace Lsc
 {

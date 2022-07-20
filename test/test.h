@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <lsc/IOString/CArguments.h>
+#include <Lsc/IOString/CArguments.h>
 
-#include <lsc/IOString/Expect.h>
+#include <Lsc/IOString/Expect.h>
 
 namespace Lsc
 {

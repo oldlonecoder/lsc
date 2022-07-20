@@ -2,8 +2,8 @@
 // Created by oldlonecoder on 21-11-20.
 //
 
-#include <lsc/IOString/Message.h>
-#include <lsc/IOString/CString.h>
+#include <Lsc/IOString/Message.h>
+#include <Lsc/IOString/CString.h>
 
 namespace Lsc
 {

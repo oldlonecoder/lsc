@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <lsc/IOString/dlexport.h>
+#include <Lsc/IOString/dlexport.h>
 #include <iostream>
 #include <cstring>
 #include <sstream>

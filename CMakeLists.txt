@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.13..3.22 FATAL_ERROR)
 ## Project name
-set(FrameWorkName "lsc")
+set(FrameWorkName "Lsc")
 project(${FrameWorkName} VERSION 0.1.0 LANGUAGES CXX)
 
 message ("**************** " ${FrameWorkName} " Master Project ********************")
 #
 option(BUILD_IOSTR "Enable building the common string utilities (IOStr) library" ON)
 #option(BUILD_LOGGER "Enable building the c-logger sub module (Logger) library" ON)
-#option(BUILD_ANSIUI "Enable building the ansi-ui submodule (AnsiUI)library" ON)
+option(BUILD_IOCON "Enable building the IO Console UI submodule (IOCon)library" ON)
 #option(BUILD_DLPLUGIN "Enable building the dynamic lib loader submodule (DLPlugin) library" ON)
 #option(BUILD_XIO "Enable building the dynamic lib loader submodule (Scripture) library" ON)
 option(BUILD_TESTS "Enable building the global tests (Test.app) application " ON)
@@ -33,12 +33,12 @@ endif()
 #    add_subdirectory(logger)
 #    message ("submodule build:" "liblogger.{so/dll/dylib} set -> ${LOGGER_INCLUDE_DIR}")
 #endif()
-#
-#if(BUILD_ANSIUI)
-#    SET(ANSIUI_INCLUDE_DIR ${FRAMEWORK_ROOT}/ansi-ui/include)
-#    add_subdirectory(ansi-ui)
-#    message ("submodule build:" "libansiui.{so/dll/dylib} set -> ${ANSIUI_INCLUDE_DIR}")
-#endif()
+
+if(BUILD_IOCON)
+    SET(IOCON_INCLUDE_DIR ${FRAMEWORK_ROOT}/IOCon/include)
+    add_subdirectory(IOCon)
+    message ("submodule build:" "libIOCon.{so/dll/dylib} set -> ${IOCON_INCLUDE_DIR}")
+endif()
 #
 #if(BUILD_DLLOADER)
 #    SET(DLLOADER_INCLUDE_DIR ${FRAMEWORK_ROOT}/dlloader/include)

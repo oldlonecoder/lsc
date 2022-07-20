@@ -2,7 +2,7 @@
 // Created by Mobile Klinik on 2022-06-22.
 //
 
-#include <lsc/IOString/CString.h>
+#include <Lsc/IOString/CString.h>
 
 namespace Lsc
 {

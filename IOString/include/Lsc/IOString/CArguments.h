@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <lsc/IOString/CString.h>
+#include <Lsc/IOString/CString.h>
 
 #include <map>
 
