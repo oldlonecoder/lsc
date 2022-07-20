@@ -27,7 +27,6 @@ add_library(
 		include/lsc/IOString/Message.h
         src/Expect.cc 
         include/lsc/IOString/Expect.h
-        include/lsc/IOString/Result.h
 )
 
 
