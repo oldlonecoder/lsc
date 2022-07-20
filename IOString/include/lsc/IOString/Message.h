@@ -1,5 +1,5 @@
 //
-// Created by Mobile Klinik on 2022-07-06.
+// Created by oldlonecoder on 2022-07-06.
 //
 
 //#ifndef LSC_MESSAGE_H
