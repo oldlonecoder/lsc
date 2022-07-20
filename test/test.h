@@ -6,7 +6,7 @@
 
 #include <lsc/IOString/CArguments.h>
 
-#include <lsc/IOString/Result.h>
+#include <lsc/IOString/Expect.h>
 
 namespace Lsc
 {
@@ -22,10 +22,10 @@ public:
     Test(int argc, char **argv);
     ~Test();
     
-    Result<> execute();
+    Expect<> execute();
     
     [[nodiscard]] bool HasArgs() const;
-    [[nodiscard]] Result<> InitArguments();
+    [[nodiscard]] Expect<> InitArguments();
         
 };
 

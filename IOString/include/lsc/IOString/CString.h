@@ -95,10 +95,7 @@ public:
         SPS &operator>>(CString::Token &aWord);
     } _mCursor;
     
-    string_view operator() ()
-    {
-        return _mData.data();
-    }
+    string_view operator()(){ return _mData.data(); }
     
     CString& operator=(string_view aStr);
     CString& operator=(const char* aStr);

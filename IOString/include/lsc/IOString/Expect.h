@@ -82,13 +82,14 @@ public:
     explicit operator bool() const
     { return _mSt; }
     
-    Message operator()()
+    Message& operator()()
     {
         if(!_mSt)
             return std::any_cast<Message&>(_mA);
-        return std::any_cast<Message>(_mA);
+
+        throw Message( Message::Type::Err ) << ": " << " - Expected value type is present. Use deref(*) prefix operator.";
     }
-    
+        
     auto operator*()
     {
         if(!_mSt)

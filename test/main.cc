@@ -11,6 +11,9 @@ int main(int argc, char** argv)
     try
     {
         auto C = Test.execute();
+        if(!C)
+            std::cout << " Test execution failed, see the incoming messages\n";
+        
         Lsc::Message::Clear( [](Lsc::Message& M) { std::cout << M() << '\n'; } );
         return !(*C == Lsc::Message::Code::Accepted);        
     }

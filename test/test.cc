@@ -20,7 +20,7 @@ Test::~Test()
     delete _mpArgs;
 }
 
-Result<> Test::execute()
+Expect<> Test::execute()
 {
     Message::InitCodes();
     auto C = InitArguments();
@@ -46,7 +46,7 @@ bool Test::HasArgs() const
 }
 
 
-Result<> Test::InitArguments()
+Expect<> Test::InitArguments()
 {
     auto _mpArgs = new CArgumentList<Test>(*this, argc, argv);
     //_mpArgs->PushArg({ "", "CString", false,true,&Test::TheCArg });
