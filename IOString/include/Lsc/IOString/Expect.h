@@ -9,7 +9,7 @@
 namespace Lsc
 {
 
-template<typename T = Message::Code>  class  Expect
+template<typename T = Message::Code>  class Expect
 {
     
     std::any _mA;

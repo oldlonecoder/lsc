@@ -7,7 +7,7 @@
 
 #pragma once
 #include <Lsc/IOCon/dllexport.h>
-#include <Lsc/IOCon/Geometry>
+#include <Lsc/IOCon/Geometry.h>
 #include <Lsc/IOString/Expect.h>
 
 
