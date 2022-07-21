@@ -14,7 +14,9 @@ int main(int argc, char** argv)
         if(!C)
             std::cout << " Test execution failed, see the incoming messages\n";
         
+        std::cout << "Flushing Message::List:\n--------------------------------------------------------\n";
         Lsc::Message::Clear( [](Lsc::Message& M) { std::cout << M() << '\n'; } );
+        std::cout << "Flushing Message::List:\n----------------END-------------------------------------\n";
         return !(*C == Lsc::Message::Code::Accepted);        
     }
 

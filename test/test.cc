@@ -63,7 +63,10 @@ Expect<> Test::TestIOCon()
     String Str;
     Str << " This terminal dimensions: " << Color::Lime << Con.Width() << Color::Reset << "x" << Color::Lime << Con.Height() << Color::Reset << '\n';
     std::cout << Str();
-
+    Str = "Test Size values:";
+    Size S = Con.Dimensions();
+    Str << S.ToString();
+    std::cout << Str() << '\n';
     return Message::Code::Ok;
 }
 
