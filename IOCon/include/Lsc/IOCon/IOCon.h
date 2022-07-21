@@ -14,4 +14,15 @@ namespace Lsc
 {
 
 
+/**
+ * @brief Screen Console IO Buffer
+ * 
+ * 
+ * @author oldlonecoder. lussier.serge@gmail.com
+ */
+class IOCON_LIB Console
+{
+
+};
+
 }

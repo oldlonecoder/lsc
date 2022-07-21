@@ -16,6 +16,8 @@ add_library(
         SHARED
         include/Lsc/IOCon/IOCon.h 
         src/IOCon.cc
+        include/Lsc/IOCon/Geometry
+        src/Geometry.cc
 )
 
 

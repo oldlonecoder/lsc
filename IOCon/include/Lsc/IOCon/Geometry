@@ -1,0 +1,152 @@
+
+
+#pragma once
+
+#include <Lsc/IOCon/dllexport.h>
+#include <Lsc/IOString/String.h>
+
+
+namespace Lsc
+{
+
+struct IOCON_LIB Point
+{
+
+    int X = 0;
+    int Y = 0;
+    bool S = false; ///< Non-Set ( invalid )
+    bool N = true;
+    using List = std::vector<Point>;
+    using Iterator = List::iterator;
+    using ConstIterator = List::const_iterator;
+    
+    Point();
+    Point(const Point& PXY) : X(PXY.X), Y(PXY.Y), S(PXY.S) {}
+    Point( int aX, int aY );
+    
+    Point(Point&& PXY)noexcept { X = PXY.X; Y = PXY.Y; }
+    explicit Point ( bool ) {
+        X = 0;
+        Y = 0;
+        N = true;
+        S = false;
+    }
+
+    ~Point() = default;
+    
+    Point& operator -= ( const Point& XY ) 
+    {
+        if (!XY.S) return *this;
+        X -= XY.X;
+        Y -= XY.Y;
+        return *this;
+    }
+
+    Point& operator += ( const Point& XY ) 
+    {
+        X += XY.X;
+        Y += XY.Y;
+        return *this;
+    }
+
+    Point operator+ ( const Point& P ) const  
+    {
+        return {P.X + X, P.Y + Y };
+    }
+
+    Point operator- ( const Point& P ) const  
+    {
+        return { X - P.X, Y - P.Y };
+    }
+
+    void operator() ( int NewX, int NewY ) {
+        X = NewX;
+        Y = NewY;
+        S = true;
+        N = false;
+    }
+
+    void move ( int dx, int dy ) {
+        X += dx;
+        Y += dy;
+    }
+
+    [[nodiscard]] std::string to_string() const;
+
+    bool operator == ( const Point& XY ) const 
+    {
+        return (X == XY.X && Y == XY.Y) && (N == XY.N);
+    }
+
+    Point& operator= ( const Point& XY ) {
+        X = XY.X;
+        Y = XY.Y;
+        S = XY.S;
+        N = !XY.N;
+        return *this;
+    }
+
+    Point& operator= (Point& XY) {
+        X  = XY.X;
+        Y  = XY.Y;
+        S  = XY.S;
+        N  =  XY.N;
+        return *this;
+    }
+
+
+    bool operator >= (const Point& XY) const{
+        return X >= XY.X || Y >= XY.Y;
+    }
+    bool operator != ( const Point& XY )const {
+        return XY.X != X || XY.Y != Y;
+    }
+
+    bool operator < ( const Point& XY ) const {
+        return (X < XY.X ) || (Y < XY.Y );
+    }
+
+    bool operator > ( const Point& XY ) const {
+        return (X > XY.X ) || (Y > XY.Y );
+    }
+    bool IsNull();
+    void Invalidate();
+    void Enable();
+
+    /*!
+     *   @breif operator boolean to check if this instance is nul ==> unset.
+     *   @note boolean op = {x|y == -1}
+     */
+    bool operator !() const
+    {
+        return (N || *this == Point::Nul);
+    }
+
+    void operator ++(){ ++X; }
+    void operator ++(int){ ++Y; }
+    Point& operator=(Point&& XY)
+    {
+        X = std::move(XY.X);
+        Y = std::move(XY.Y);
+        S = std::move(XY.S); 
+        return *this;
+    }
+    
+    [[maybe_unused]] static Point Invalid;
+    static Point Nul;
+};
+
+
+class IOCON_LIB Size
+{
+
+};
+
+
+class IOCON_LIB Rectangle 
+{
+
+};
+
+
+}
