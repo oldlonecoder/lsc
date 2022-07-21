@@ -23,7 +23,7 @@ endif()
 list(
     APPEND INCLUDE_PATHS
     "${IOSTR_INCLUDE_DIR}"
-#    "${CLOG_INCLUDE_DIR}"
+    "${IOCON_INCLUDE_DIR}"
 #    "${ANSIUI_INCLUDE_DIR}"
 #    "${DLLOADER_INCLUDE_DIR}"
 #    "${XIO_INCLUDE_DIR}"
@@ -46,8 +46,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 
 
-target_link_libraries(${PROJECT_NAME} IOString)
+target_link_libraries(${PROJECT_NAME} IOString IOCon)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
 
-INCLUDE(Tests.cmake)
+#INCLUDE(Tests.cmake)

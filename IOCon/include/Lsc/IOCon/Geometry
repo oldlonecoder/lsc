@@ -9,6 +9,8 @@
 namespace Lsc
 {
 
+#pragma region Point
+
 struct IOCON_LIB Point
 {
 
@@ -136,14 +138,16 @@ struct IOCON_LIB Point
     static Point Nul;
 };
 
+#pragma endregion Point
 
+#pragma region Size
 struct IOCON_LIB Size
 {
     Point Min = {1,1};
     Point Max = {-1,-1};
     Point WH  = {-1,-1};
     
-    Size();
+    Size() = default;
     Size(Point xy, Point mxy, Point xxy);
     
     explicit operator bool() const { return WH.X <=0 || WH.Y <=0; }
@@ -153,6 +157,10 @@ struct IOCON_LIB Size
     Size& SetMax(Point xy);
     std::string ToString() const;
 };
+
+#pragma endregion Size
+
+#pragma region Rectangle
 
 
 struct IOCON_LIB Rectangle 
@@ -364,6 +372,7 @@ struct IOCON_LIB Rectangle
     static Rectangle Void;
 };
 
+#pragma endregion Rectangle
 
 #pragma region WinBuffer
 

@@ -27,7 +27,7 @@ Expect<> Test::execute()
     if (HasArgs())
     {
         String Str;
-        Str << Color::OOB << Str << Color::BlueViolet <<  argv[0] << Color::Yellow << " ==> Arg count: " << Color::CadetBlue2 << argc << "...\n";
+        Str << Color::BlueViolet <<  argv[0] << Color::Yellow << " ==> Arg count: " << Color::CadetBlue2 << argc << "...\n";
         Str << Color::White << argv[1];
         Message::Debug(SourceLocation) << Str();
         //...
@@ -37,7 +37,8 @@ Expect<> Test::execute()
     else
         return Message::Error() << Message::Code::Expected << " Arguments to the program";
     
-    return Message::Code::Accepted;
+    return TestIOCon();
+    //return Message::Code::Accepted;
 }
 
 bool Test::HasArgs() const
@@ -54,5 +55,16 @@ Expect<> Test::InitArguments()
     return Message::Code::Accepted;
 }
 
+Expect<> Test::TestIOCon()
+{
+    Console Con;
+    auto R = Con.Init();
+    std::cout << " Console.Init : " << Message::CodeText(*R) << "; \n";
+    String Str;
+    Str << " This terminal dimensions: " << Color::Lime << Con.Width() << Color::Reset << "x" << Color::Lime << Con.Height() << Color::Reset << '\n';
+    std::cout << Str();
+
+    return Message::Code::Ok;
+}
 
 }

@@ -5,8 +5,9 @@
 #pragma once
 
 #include <Lsc/IOString/CArguments.h>
+//#include <Lsc/IOString/Expect.h>
+#include <Lsc/IOCon/IOCon.h>
 
-#include <Lsc/IOString/Expect.h>
 
 namespace Lsc
 {
@@ -26,6 +27,8 @@ public:
     
     [[nodiscard]] bool HasArgs() const;
     [[nodiscard]] Expect<> InitArguments();
+    [[nodiscard]] Expect<> TestIOCon();
+    
         
 };
 

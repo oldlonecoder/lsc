@@ -8,6 +8,7 @@
 #pragma once
 #include <Lsc/IOCon/dllexport.h>
 #include <Lsc/IOCon/Geometry>
+#include <Lsc/IOString/Expect.h>
 
 
 
@@ -24,8 +25,17 @@ namespace Lsc
 class IOCON_LIB Console
 {
     // No need for a full Rectangle functions here. Just need the screen/console dimensions. Just create inline Rectangle for computations
-    Size Wh;
-    
+    Size _mWh;
+    Expect<> GetScreenSize();
+
+public:
+
+    //...
+    Expect<> Init();
+    int Width() const { return _mWh.WH.X; }
+    int Height() const { return _mWh.WH.Y; }
+    Size Dimensions() const { return _mWh; }
+
 };
 
 }
