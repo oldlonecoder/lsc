@@ -177,14 +177,17 @@ struct IOCON_LIB Rectangle
         return S.operator bool();
     }
     
-    void operator()( int a, int b, int c, int d ) {
+    void operator()( int a, int b, int c, int d ) 
+    {
         Assign(a,b,c,d);
     }
-    bool operator[](const Point& xy)const {
+    bool operator[](const Point& xy)const 
+    {
         return Contains(xy);
     }
     
-    Rectangle operator +( const Rectangle& R) {
+    Rectangle operator +( const Rectangle& R) 
+    {
         Rectangle RR = (*this) + R.A;
         return RR;
     }
@@ -212,45 +215,45 @@ struct IOCON_LIB Rectangle
     bool operator !() const {
         return  S.operator bool();
     }
-    bool operator == ( const Rectangle& r ) const
+    bool operator == ( const Rectangle& R ) const
     {
-        return A == r.A && B==r.B;
+        return A == R.A && B==R.B;
     }
     
-    Rectangle operator& ( const Rectangle& r ) const  {
-        return Inter ( r );
+    Rectangle operator& ( const Rectangle& R ) const  {
+        return Inter ( R );
     }
-    Rectangle& operator&= ( const Rectangle& r )  {
-        *this = Inter ( r );
+    Rectangle& operator&= ( const Rectangle& R )  {
+        *this = Inter ( R );
         return *this;
     }
-    Rectangle operator | ( const Rectangle& r ) {
-        return Union ( r );
+    Rectangle operator | ( const Rectangle& R ) {
+        return Union ( R );
     }
     
-    Rectangle& operator |= (const Rectangle& r) {
-        *this = Union(r);
+    Rectangle& operator |= (const Rectangle& R) {
+        *this = Union(R);
         return *this;
     }
-    Rectangle& operator += ( const Rectangle& r ) {
-        Move ( r.A );
+    Rectangle& operator += ( const Rectangle& R ) {
+        Move ( R.A );
         return *this;
     }
-    Rectangle& operator -= ( const Rectangle& r ) {
-        Move ( -r.A.X, -r.A.Y );
+    Rectangle& operator -= ( const Rectangle& R ) {
+        Move ( -R.A.X, -R.A.Y );
         return *this;
     }
-    Rectangle& operator -= ( const Point& xy ) {
-        Move ( -xy.X, -xy.Y );
+    Rectangle& operator -= ( const Point& XY ) {
+        Move ( -XY.X, -XY.Y );
         return *this;
     }
-    Rectangle& operator += ( const Point& xy ) {
-        Move ( xy );
+    Rectangle& operator += ( const Point& XY ) {
+        Move ( XY );
         return *this;
     }
-    bool operator &&(const Point& xy) const
+    bool operator &&(const Point& XY) const
     {
-        return Contains(xy);
+        return Contains(XY);
     }
     
     [[nodiscard]] bool Contains ( int px, int py ) const {
