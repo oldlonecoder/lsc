@@ -23,7 +23,7 @@ namespace Lsc
  */
 class IOCON_LIB Console
 {
-    // No need for a full Rectangle infos here. Just need the screen/console dimensions. Just create inline Rectangle for computations
+    // No need for a full Rectangle functions here. Just need the screen/console dimensions. Just create inline Rectangle for computations
     Size Wh;
     
 };
