@@ -7,6 +7,7 @@
 
 #pragma once
 #include <Lsc/IOCon/dllexport.h>
+#include <Lsc/IOCon/Geometry>
 
 
 
@@ -22,7 +23,9 @@ namespace Lsc
  */
 class IOCON_LIB Console
 {
-
+    // No need for a full Rectangle infos here. Just need the screen/console dimensions. Just create inline Rectangle for computations
+    Size Wh;
+    
 };
 
 }
