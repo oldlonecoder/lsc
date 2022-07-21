@@ -36,7 +36,7 @@ class IOSTR_LIB String
     uint8_t                _mPrecision   = 4;
     bool                   _mBacColor = false;
     //char* __buff = nullptr;
-    friend class winbuffer;
+    friend class WinBuffer;
     
     /*!
      * @brief Format specifier in order:

@@ -20,7 +20,7 @@ struct IOCON_LIB Point
     using Iterator = List::iterator;
     using ConstIterator = List::const_iterator;
     
-    Point();
+    Point() = default;
     Point(const Point& PXY) : X(PXY.X), Y(PXY.Y), S(PXY.S) {}
     Point( int aX, int aY );
     
@@ -71,7 +71,7 @@ struct IOCON_LIB Point
         Y += dy;
     }
 
-    [[nodiscard]] std::string to_string() const;
+    [[nodiscard]] std::string ToString() const;
 
     bool operator == ( const Point& XY ) const 
     {
@@ -115,15 +115,15 @@ struct IOCON_LIB Point
 
     /*!
      *   @breif operator boolean to check if this instance is nul ==> unset.
-     *   @note boolean op = {x|y == -1}
+     *   @note boolean op = {X|Y == -1}
      */
     bool operator !() const
     {
         return (N || *this == Point::Nul);
     }
 
-    void operator ++(){ ++X; }
-    void operator ++(int){ ++Y; }
+    Point& operator ++(){ ++X; return *this;}
+    Point& operator ++(int){ ++Y; return *this;}
     Point& operator=(Point&& XY)
     {
         X = std::move(XY.X);
@@ -137,16 +137,263 @@ struct IOCON_LIB Point
 };
 
 
-class IOCON_LIB Size
+struct IOCON_LIB Size
 {
-
+    Point Min = {1,1};
+    Point Max = {-1,-1};
+    Point WH  = {-1,-1};
+    
+    Size();
+    Size(Point xy, Point mxy, Point xxy);
+    
+    explicit operator bool() const { return WH.X <=0 || WH.Y <=0; }
+    Size& operator=(const Size&)=default;
+    Size& operator=(Point xy);
+    Size& SetMin(Point xy);
+    Size& SetMax(Point xy);
+    std::string ToString() const;
 };
 
 
-class IOCON_LIB Rectangle 
+struct IOCON_LIB Rectangle 
 {
+    Point A;
+    Point B;
+    Size S;
+    bool NullInstance = true;
+    
+    using List = std::vector<Rectangle>;
+    using Iterator   = std::vector<Rectangle>::iterator;
+    using ConstIterator = std::vector<Rectangle>::const_iterator;
+    //using int_has_t = std::map<int, Rectangle>;
 
+    Rectangle();
+    Rectangle ( const Point& A, int w, int h );
+    Rectangle ( const Point& A, const Size& _size );
+    ~Rectangle();
+    
+    [[nodiscard]] bool Valid() const
+    {
+        return S.operator bool();
+    }
+    
+    void operator()( int a, int b, int c, int d ) {
+        Assign(a,b,c,d);
+    }
+    bool operator[](const Point& xy)const {
+        return Contains(xy);
+    }
+    
+    Rectangle operator +( const Rectangle& R) {
+        Rectangle RR = (*this) + R.A;
+        return RR;
+    }
+    
+    Rectangle operator +( Point xy) const{
+        return {{A.X + xy.X, A.Y + xy.Y}, S};
+    }
+    
+    bool operator()(const Rectangle* r) const{
+        // calling A(&B) is to verify if the entire B is inside this Rectangle boundaries.
+        return  Contains(r->A) && Contains(r->B);
+    }
+    bool operator != (const Rectangle& r) const{
+        return S.WH != r.S.WH;
+    }
+    Rectangle   operator -( Point xy) const {
+        Rectangle R(A, S);
+        R -= xy;
+        return R;
+    }
+    
+    bool operator >= (const Rectangle& R) const{
+        return S.WH >= R.S.WH;
+    }
+    bool operator !() const {
+        return  S.operator bool();
+    }
+    bool operator == ( const Rectangle& r ) const
+    {
+        return A == r.A && B==r.B;
+    }
+    
+    Rectangle operator& ( const Rectangle& r ) const  {
+        return Inter ( r );
+    }
+    Rectangle& operator&= ( const Rectangle& r )  {
+        *this = Inter ( r );
+        return *this;
+    }
+    Rectangle operator | ( const Rectangle& r ) {
+        return Union ( r );
+    }
+    
+    Rectangle& operator |= (const Rectangle& r) {
+        *this = Union(r);
+        return *this;
+    }
+    Rectangle& operator += ( const Rectangle& r ) {
+        Move ( r.A );
+        return *this;
+    }
+    Rectangle& operator -= ( const Rectangle& r ) {
+        Move ( -r.A.X, -r.A.Y );
+        return *this;
+    }
+    Rectangle& operator -= ( const Point& xy ) {
+        Move ( -xy.X, -xy.Y );
+        return *this;
+    }
+    Rectangle& operator += ( const Point& xy ) {
+        Move ( xy );
+        return *this;
+    }
+    bool operator &&(const Point& xy) const
+    {
+        return Contains(xy);
+    }
+    
+    [[nodiscard]] bool Contains ( int px, int py ) const {
+        return Contains ( {px,py} );
+    }
+    bool Contains ( const Point& p ) const
+    {
+        return ( ( p.X >= A.X ) && ( p.X <= B.X ) && ( p.Y >= A.Y ) && ( p.Y <= B.Y ) );
+    }
+    Rectangle Inter ( const Rectangle& ) const;
+    
+    void Assign ( int a_, int b_, int w_, int h_ )
+    {
+        A.X = a_;
+        A.Y = b_;
+        B.X = A.X + w_ -1;
+        B.Y = A.Y + h_ -1;
+        S = { w_,h_ };
+        (void)Valid();
+    }
+    
+    void Assign ( const Point& pa, const Point& pb )
+    {
+        A = pa;
+        B = pb;
+        S = { B.X - A.X + 1, B.Y - A.Y + 1 };
+        (void)Valid();
+    }
+    Rectangle Union ( const Rectangle& r );
+    
+    void Assign(const Point& pa, const Size& z)
+    {
+        A = pa;
+        B.X = A.X + z.WH.X -1;
+        B.Y = A.Y + z.WH.Y -1;
+        S = z;
+    }
+    
+    void ResizeTo ( const Point& xy );
+    void Resize ( const Point& dxy );
+    void BRResize(const Point& dxy);
+    void MoveTo ( const Point& xy )
+    {
+        A.X = xy.X;
+        A.Y = xy.Y;
+        B.X =  A.X + S.WH.X -1;
+        B.Y =  A.Y + S.WH.Y -1;
+    }
+    
+    void Move ( const Point& dxy )
+    {
+        A.X += dxy.X;
+        A.Y += dxy.Y;
+        B.X += dxy.X;
+        B.Y += dxy.Y;
+        // no validation check needed here...
+    }
+    
+    void Move ( int dx, int dy ) {
+        A.X += dx;
+        A.Y += dy;
+        B.X += dx;
+        B.Y += dy;
+    }
+    
+    void MoveTo ( int A, int B ) {
+        MoveTo ( Point { A,B } );
+    }
+    
+    int Height() const  {
+        return S.WH.Y;
+    }
+    
+    [[nodiscard]] Size RSZ() const  {
+        return S;
+    }
+    
+    [[nodiscard]] int Width() const {
+        return S.WH.X;
+    }
+    [[nodiscard]] std::string ToString() const;
+    
+    
+    
+    void ResizeAndCenter ( const Point& dxy )
+    {
+        Assign(A.X+ (-1*dxy.X), A.Y+ (-1*dxy.Y), S.WH.X+dxy.X*2, S.WH.Y+dxy.Y*2);
+    }
+    
+    
+    /*!
+     *        \fn stdui::Rectangle::bottomleft()
+     */
+    [[nodiscard]] Point BottomLeft() const
+    {
+        return { A.X, B.Y };
+    }
+    
+    /*!
+     *        \fn stdui::Rectangle::topright()
+     */
+    [[nodiscard]] Point TopRight() const
+    {
+        return { B.X, A.Y };
+    }
+    
+    static Rectangle Nil;
+    static Rectangle Void;
 };
 
+
+#pragma region WinBuffer
+
+struct IOCON_LIB WinBuffer
+{
+    String* Buffer = nullptr;
+    Point cxy;
+    Rectangle r;
+    Size sz;
+
+    WinBuffer& Goto(int x, int y);
+    WinBuffer& operator << (const Point& xy) { return Goto(xy.X, xy.Y); }
+    void Set(int w, int h);
+
+    WinBuffer& operator ++();
+    WinBuffer& operator ++(int);
+    WinBuffer& operator --();
+    WinBuffer& operator --(int);
+    WinBuffer& TPut(const std::string& txt);
+    
+    void Clear();
+    void Release();
+    template<typename T> WinBuffer& operator << (T v)
+    {
+        String str;
+        str << v;
+        return TPut(str());
+    }
+
+    std::string Details();
+    operator std::string();
+};
+
+#pragma endregion WinBuffer
 
 }
