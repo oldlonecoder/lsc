@@ -7,7 +7,7 @@
 #endif // Windows/Linux
 
 #include <Lsc/IOCon/IOCon.h>
-
+#include <string>
 
 namespace Lsc
 {
@@ -57,7 +57,11 @@ Expect<> Console::RenderWidget(Widget* W)
     std::string str = W->_mR.A.ToString();
     std::cout << str << "This is the Result of Console::GotoXY(" << str << ")...\n";
     
-    for (int Y = 0; Y < W->Height(); Y++) Console::RenderScanLine(W, Y);
+    for (int Y = 0; Y < W->Height(); Y++)
+    {
+        Console::GotoXY({ W->_mR.A.X, W->_mR.A.Y + Y });
+        Console::RenderScanLine(W, Y);
+    }
 
     Message::Debug(SourceLocation) << " Check Console::GotoXY... (coords):" << W->_mR.A.ToString();
     return Expect<>();
@@ -66,10 +70,18 @@ Expect<> Console::RenderWidget(Widget* W)
 
 Expect<> Console::RenderScanLine(Widget* W, int LineNum)
 {
-    Widget::Cell::Type* C = W->PeekXY({ 0,0 });
+    Widget::Cell::Type* C = W->PeekXY({ 0, LineNum });
+    String Str = "[%08b]";
+    Str << *C;
+    Message::Debug(SourceLocation) << " Bits: " << Str << "...";
     Widget::Cell::Type* P = C;
     Widget::Cell Cell{*C};
     std::cout << Color::AnsiBack(Cell.Bg()) << Color::Ansi(Cell.Fg());
+    Str = " Fg:%d, Bg:%d ...";
+    Str << (int)Cell.Fg() << (int)Cell.Bg();
+    
+    Message::Debug(SourceLocation) << "Colours " << Str << "...";
+
     Widget::Cell PCell{ *P };
     for (int X = 1; X < W->_mR.Width(); X++)
     {
@@ -79,12 +91,14 @@ Expect<> Console::RenderScanLine(Widget* W, int LineNum)
             std::cout << Color::AnsiBack(Cell.Bg());
         if (PCell.Fg() != Cell.Fg())
             std::cout << Color::Ansi(Cell.Fg());
-        std::cout << (char)(*C & Widget::Cell::CharMask);
+        std::cout << "\u0a41"; // Cell.Char();
         P = C++;      
     }
-
+    std::cout << Color::Ansi(Color::Reset);
+    std::flush(std::cout);
     return Message::Code::Accepted;
 }
+
 
 Expect<> Console::GotoXY(Point XY)
 {

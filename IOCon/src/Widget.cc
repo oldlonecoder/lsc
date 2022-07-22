@@ -164,7 +164,7 @@ namespace Lsc
             _mpBackBuffer = new Cell::Type[Count + _mR.Width()];
             Cell C;
             C.SetFg(Color::Type::Grey);
-            C.SetBg(Color::Type::Black);
+            C.SetBg(Color::Type::White);
             C << 0x20;
             auto B = _mpBackBuffer;
             for (uint64_t x = 0l; x < Count; x++)

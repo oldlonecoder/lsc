@@ -85,7 +85,7 @@ namespace Lsc
         
         Widget::Cell::Type* PeekXY(Point XY)
         {
-            return _mpBackBuffer + (XY.X + _mR.S.WH.X * _mR.S.WH.Y); // * sizeof(Widget::Cell::Type);
+            return _mpBackBuffer + (XY.Y * _mR.Width() + XY.X);// sizeof(Widget::Cell::Type);
         }
 
     protected:
