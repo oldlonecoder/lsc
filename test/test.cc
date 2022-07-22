@@ -82,7 +82,7 @@ namespace Lsc
         Message::Debug(SourceLocation) << " Testing Cell contents bits:";
 
         Widget::Cell Cell{0x20};
-        Cell.SetFg(Color::BlueViolet).SetBg(Color::LightCyan3) << 'A';
+        Cell.SetColor({Color::BlueViolet,Color::LightCyan3}) << 'A';
         Message::Output() << "Cell Attributes:" << Color::BlueViolet
                           << " BlueViolet " << Color::Reset << Color::BlueViolet << " Bg: " << Color::AnsiBack(Color::Cyan3) << "  Cyan3  " << Color::Reset << ':';
         String Str = "Bits: [%08b]";
@@ -95,10 +95,10 @@ namespace Lsc
     Expect<> Test::TestWidget()
     {
         Widget* W = new Widget(nullptr);
-        W->SetGeometry({ 10,3 }, { { 30,6 } });
+        W->SetGeometry({ 10,3 }, { { 40,10 } });
         Console::RenderWidget(W);
         // ...
-        
+
         Widget::Dispose(W);
         Console::Terminate();
         return Message::Code::Ok;

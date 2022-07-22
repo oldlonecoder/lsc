@@ -43,8 +43,19 @@ namespace Lsc
             Cell &SetFg(Color::Type aFg);
             Cell &SetBg(Color::Type aBg);
             Cell &SetAttribute(Widget::Cell::Type aAttr);
+
+            Cell &operator=(Widget::Cell::Type aC);
+            Cell &operator=(Widget::Cell::Type *aC);
+
             Color::Type Fg();
             Color::Type Bg();
+            Cell& SetColor(Color::Set aSet)
+            {
+                SetFg(aSet.Fg);
+                SetBg(aSet.Bg);
+                return *this;
+            }
+
             uint16_t Char();
             uint16_t Attributes();
 
@@ -69,23 +80,23 @@ namespace Lsc
         static void Dispose(Widget *W);
         Expect<> Detach();
         Expect<> DetachChild(Widget *W);
-        
+
         int Width() { return _mR.Width(); };
         int Height() { return _mR.Height(); }
 
         virtual Expect<> SetGeometry(Point aPt, Size aSz);
         virtual Expect<> Clear();
-        bool TopLevel() { return _mFlags.TopLevel == 1;  }
+        bool TopLevel() { return _mFlags.TopLevel == 1; }
 
         /// <summary>
         /// For now assume everything is valid...
         /// </summary>
         /// <param name="XY"></param>
         /// <returns>Widget::Cell::Type Pointer to the address into the backbuffer </returns>
-        
-        Widget::Cell::Type* PeekXY(Point XY)
+
+        Widget::Cell::Type *PeekXY(Point XY)
         {
-            return _mpBackBuffer + (XY.Y * _mR.Width() + XY.X);// sizeof(Widget::Cell::Type);
+            return _mpBackBuffer + (XY.Y * _mR.Width() + XY.X); // sizeof(Widget::Cell::Type);
         }
 
     protected:

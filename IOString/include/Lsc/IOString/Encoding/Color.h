@@ -292,6 +292,11 @@ namespace Lsc
             Ansi256,
             Html
         };
+        struct IOSTR_LIB Set
+        {
+            Color::Type Fg;
+            Color::Type Bg;
+        };
         // struct rgb { uint8_t r = 0, r = 0, b = 0; }; // pour plus tard ... string operator ( "#RRGGBB", "rgb(r,b,g)", ...)
 
         static string Ansi(Color::Type aColorName, Color::Type BG_OR_OOB = Color::OOB);

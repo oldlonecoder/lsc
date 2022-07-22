@@ -30,6 +30,8 @@ namespace Lsc
         return sz;
     }
 
+
+
     Expect<> Widget::Detach()
     {
         if (_mpParent)
@@ -85,6 +87,17 @@ namespace Lsc
     Widget::Cell &Widget::Cell::SetAttribute(Widget::Cell::Type aAttr)
     {
         C = (C & ~ATMask) | aAttr;
+        return *this;
+    }
+    Widget::Cell &Widget::Cell::operator=(Widget::Cell::Type aC)
+    {
+        C = aC;
+        return *this;
+    }
+
+    Widget::Cell &Widget::Cell::operator=(Widget::Cell::Type *aC)
+    {
+        C = *aC;
         return *this;
     }
 

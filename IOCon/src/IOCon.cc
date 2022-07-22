@@ -52,33 +52,23 @@ namespace Lsc
 
         Console::GotoXY(W->_mR.A);
 
-        std::string str = W->_mR.A.ToString();
-        std::cout << str << "This is the Result of Console::GotoXY(" << str << ")...\n";
+        // std::string str = W->_mR.A.ToString();
+        // std::cout << str << "This is the Result of Console::GotoXY(" << str << ")...\n";
 
         for (int Y = 0; Y < W->Height(); Y++)
         {
             Console::GotoXY({W->_mR.A.X, W->_mR.A.Y + Y});
             Console::RenderScanLine(W, Y);
         }
-
-        Message::Debug(SourceLocation) << " Check Console::GotoXY... (coords):" << W->_mR.A.ToString();
         return Expect<>();
     }
 
     Expect<> Console::RenderScanLine(Widget *W, int LineNum)
     {
         Widget::Cell::Type *C = W->PeekXY({0, LineNum});
-        String Str = "[%08b]";
-        Str << *C;
-        Message::Debug(SourceLocation) << " Bits: " << Str << "...";
         Widget::Cell::Type *P = C;
         Widget::Cell Cell{*C};
         std::cout << Color::AnsiBack(Cell.Bg()) << Color::Ansi(Cell.Fg());
-        Str = " Fg:%d, Bg:%d ...";
-        Str << (int)Cell.Fg() << (int)Cell.Bg();
-
-        Message::Debug(SourceLocation) << "Colours " << Str << "...";
-
         Widget::Cell PCell{*P};
         for (int X = 1; X < W->_mR.Width(); X++)
         {
