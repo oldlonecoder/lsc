@@ -133,8 +133,8 @@ namespace Lsc
                 Color::Ansi(Color::LightPink3),      // exist,
                 Color::Ansi(Color::LightPink4),      // not exist,
                 Color::Ansi(Color::White),           //_file_,
-                Color::Ansi(Color::BlueViolet),      //_function_,
-                Color::Ansi(Color::BlueViolet),      //_fn_,
+                Color::Ansi(Color::SkyBlue3),        //_function_,
+                Color::Ansi(Color::SkyBlue3),        //_fn_,
                 Color::Ansi(Color::White),           //_line_
             };
     }

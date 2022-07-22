@@ -28,6 +28,7 @@ namespace Lsc
             static constexpr uint64_t FGMask = 0x00000000FFFF0000;
             static constexpr uint64_t BGMask = 0x0000FFFF00000000;
             static constexpr uint64_t ATMask = 0xFFFF000000000000;
+            static constexpr uint64_t AttrMask = 0xFFFFFFFFFFFF0000;
 
             static constexpr int FGShift = 0x10;
             static constexpr int BGShift = 0x20;
@@ -48,6 +49,7 @@ namespace Lsc
             uint16_t Attributes();
 
             Widget::Cell &operator<<(uint16_t aCharacter);
+            Cell &ResetAttributes(Widget::Cell::Type Bits);
         };
 
         struct IOCON_LIB Flag
@@ -80,5 +82,6 @@ namespace Lsc
         Widget::List _mChildren;
         static Widget::List _mpsTheWidgetsGarbage;
         static int EmptyGarbage();
+        Cell _mAttributes;
     };
 }

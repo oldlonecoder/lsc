@@ -28,6 +28,7 @@ namespace Lsc
         [[nodiscard]] bool HasArgs() const;
         [[nodiscard]] Expect<> InitArguments();
         [[nodiscard]] Expect<> TestIOCon();
+        [[nodiscard]] Expect<> TestWidgetCellColours();
     };
 
 }

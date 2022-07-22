@@ -81,9 +81,10 @@ namespace Lsc
     }
 
     Widget::Cell::Cell(Widget::Cell::Type aCell) : C(aCell) {}
+
     Widget::Cell &Widget::Cell::SetAttribute(Widget::Cell::Type aAttr)
     {
-        C &= ~ATMask | aAttr;
+        C = (C & ~ATMask) | aAttr;
         return *this;
     }
 
@@ -92,16 +93,16 @@ namespace Lsc
         return (C & ATMask) >> ATShift;
     }
 
-#pragma region Operations
+#pragma region CellOperations
     Widget::Cell &Widget::Cell::SetFg(Color::Type aFg)
     {
-        C &= ~FGMask | static_cast<uint16_t>(aFg) << FGShift;
+        C = (C & ~FGMask) | (static_cast<uint64_t>(aFg) << FGShift);
         return *this;
     }
 
     Widget::Cell &Widget::Cell::SetBg(Color::Type aBg)
     {
-        C &= ~BGMask | static_cast<uint16_t>(aBg) << BGShift;
+        C = (C & ~BGMask) | (static_cast<uint64_t>(aBg) << BGShift);
         return *this;
     }
 
@@ -121,7 +122,7 @@ namespace Lsc
 
     Widget::Cell &Widget::Cell::operator<<(uint16_t aCharacter)
     {
-        C &= ~CharMask | aCharacter;
+        C = (C & ~CharMask) | aCharacter;
         return *this;
     }
 
@@ -168,5 +169,11 @@ namespace Lsc
         return _mpBackBuffer;
     }
 
-#pragma endregion Operations
+    Widget::Cell &Widget::Cell::ResetAttributes(Widget::Cell::Type Bits)
+    {
+        C = (C & CharMask) | Bits;
+        return *this;
+    }
+
+#pragma endregion CellOperations
 }

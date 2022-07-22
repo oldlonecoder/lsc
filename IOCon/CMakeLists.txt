@@ -19,7 +19,9 @@ add_library(
         include/Lsc/IOCon/Geometry.h
         src/Geometry.cc
         src/Widget.cc 
-        include/Lsc/IOCon/Widget.h 
+        include/Lsc/IOCon/Widget.h
+        src/Painter.cc 
+        include/Lsc/IOCon/Painter.h
 )
 
 

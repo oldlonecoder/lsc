@@ -35,8 +35,9 @@ namespace Lsc
         else
             return Message::Error() << Message::Code::Expected << " Arguments to the program";
 
-        return TestIOCon();
-        // return Message::Code::Accepted;
+        TestIOCon();
+        TestWidgetCellColours();
+        return Message::Code::Accepted;
     }
 
     bool Test::HasArgs() const
@@ -72,6 +73,21 @@ namespace Lsc
         Widget::Cell C{0x20};
         Str << C.C;
         Message::Debug(SourceLocation) << Color::White << Str() << " ;";
+        return Message::Code::Ok;
+    }
+
+    Expect<> Test::TestWidgetCellColours()
+    {
+        Message::Debug(SourceLocation) << " Testing Cell contents bits:";
+
+        Widget::Cell Cell{0x20};
+        Cell.SetFg(Color::BlueViolet).SetBg(Color::LightCyan3) << 'A';
+        Message::Output() << "Cell Attributes:" << Color::BlueViolet
+                          << " BlueViolet " << Color::Reset << " Bg: " << Color::AnsiBack(Color::Cyan3) << "  Cyan3  " << Color::Reset << ':';
+        String Str = "Bits: [%08b]";
+        Str << Cell.C;
+        Message::Output() << Str();
+        Message::Output() << " To be continued ( Fg() & Bg() )";
         return Message::Code::Ok;
     }
 
