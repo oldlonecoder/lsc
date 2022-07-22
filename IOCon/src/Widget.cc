@@ -129,9 +129,11 @@ namespace Lsc
     Expect<> Widget::SetGeometry(Point aPt, Size aSz)
     {
         _mR.Assign(aPt, aSz);
+        Message::Debug(SourceLocation) << " Dimensions: " << _mR.ToString();
         if (_mpBackBuffer)
             delete[] _mpBackBuffer;
 
+        Message::Output() << " Now Allocating the backbuffer";
         WAlloc();
         return Message::Code::Ok;
     }
@@ -156,15 +158,21 @@ namespace Lsc
         if (!_mR)
             throw Message::Fatal(SourceLocation) << Message::Code::NullPtr << " Cannot allocate Internal backbufffer memory on invalid geometry";
 
-        auto Count = _mR.Width() * _mR.Height();
-        _mpBackBuffer = new Cell::Type[Count + _mR.Width()];
-        Cell C;
-        C.SetFg(Color::Type::Grey);
-        C.SetBg(Color::Type::Black);
-        C << 0x20;
-        auto B = _mpBackBuffer;
-        for (uint64_t x = 0l; x < Count; x++)
-            *B++ = C.C;
+        if (_mFlags.TopLevel)
+        {
+            auto Count = _mR.Width() * _mR.Height();
+            _mpBackBuffer = new Cell::Type[Count + _mR.Width()];
+            Cell C;
+            C.SetFg(Color::Type::Grey);
+            C.SetBg(Color::Type::Black);
+            C << 0x20;
+            auto B = _mpBackBuffer;
+            for (uint64_t x = 0l; x < Count; x++)
+                *B++ = C.C;
+        }
+        else {
+            //...
+        }
 
         return _mpBackBuffer;
     }

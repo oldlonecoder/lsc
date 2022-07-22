@@ -125,10 +125,14 @@
   <ItemGroup>
     <ClCompile Include="src\Geometry.cc" />
     <ClCompile Include="src\IOCon.cc" />
+    <ClCompile Include="src\Painter.cc" />
+    <ClCompile Include="src\Widget.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\lsc\iocon\dllexport.h" />
     <ClInclude Include="include\lsc\iocon\IOCon.h" />
+    <ClInclude Include="include\Lsc\IOCon\Painter.h" />
+    <ClInclude Include="include\Lsc\IOCon\Widget.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\Lsc\IOCon\Geometry.h" />

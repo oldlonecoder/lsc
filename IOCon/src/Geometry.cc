@@ -57,6 +57,12 @@ Size::Size(Point xy, Point mxy, Point xxy) :
     WH(std::move(xy)), Min(std::move(mxy)), Max(std::move(xxy))
 {}
 
+Size::Size(Point aXY):
+    WH({aXY.X,aXY.Y})
+{
+   
+}
+
 Size &Size::operator=(Point xy)
 {
     WH = xy;

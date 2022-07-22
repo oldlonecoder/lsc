@@ -37,6 +37,7 @@ namespace Lsc
 
         TestIOCon();
         TestWidgetCellColours();
+        TestWidget();
         return Message::Code::Accepted;
     }
 
@@ -83,11 +84,23 @@ namespace Lsc
         Widget::Cell Cell{0x20};
         Cell.SetFg(Color::BlueViolet).SetBg(Color::LightCyan3) << 'A';
         Message::Output() << "Cell Attributes:" << Color::BlueViolet
-                          << " BlueViolet " << Color::Reset << " Bg: " << Color::AnsiBack(Color::Cyan3) << "  Cyan3  " << Color::Reset << ':';
+                          << " BlueViolet " << Color::Reset << Color::BlueViolet << " Bg: " << Color::AnsiBack(Color::Cyan3) << "  Cyan3  " << Color::Reset << ':';
         String Str = "Bits: [%08b]";
         Str << Cell.C;
         Message::Output() << Str();
         Message::Output() << " To be continued ( Fg() & Bg() )";
+        return Message::Code::Ok;
+    }
+
+    Expect<> Test::TestWidget()
+    {
+        Widget* W = new Widget(nullptr);
+        W->SetGeometry({ 10,3 }, { { 30,2 } });
+        Console::RenderWidget(W);
+        // ...
+        
+        Widget::Dispose(W);
+        Console::Terminate();
         return Message::Code::Ok;
     }
 

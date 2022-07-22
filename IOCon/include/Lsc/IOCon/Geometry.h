@@ -149,6 +149,7 @@ struct IOCON_LIB Size
     
     Size() = default;
     Size(Point xy, Point mxy, Point xxy);
+    Size(Point aXY);
     
     explicit operator bool() const { return WH.X <=0 || WH.Y <=0; }
     Size& operator=(const Size&)=default;

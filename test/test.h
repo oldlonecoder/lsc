@@ -29,6 +29,8 @@ namespace Lsc
         [[nodiscard]] Expect<> InitArguments();
         [[nodiscard]] Expect<> TestIOCon();
         [[nodiscard]] Expect<> TestWidgetCellColours();
+        [[nodiscard]] Expect<> TestWidget();
+
     };
 
 }

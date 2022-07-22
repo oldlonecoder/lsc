@@ -21,12 +21,24 @@
     <ClCompile Include="src\IOCon.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Painter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Widget.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\lsc\iocon\dllexport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\lsc\iocon\IOCon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lsc\IOCon\Widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lsc\IOCon\Painter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

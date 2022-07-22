@@ -31,6 +31,11 @@ namespace Lsc
         int Width() const { return _mWh.WH.X; }
         int Height() const { return _mWh.WH.Y; }
         Size Dimensions() const { return _mWh; }
+        static int Terminate();
+        static Expect<> RenderWidget(Widget* W);
+        static Expect<> RenderScanLine(Widget* W, int LineNum);
+        static Expect<> GotoXY(Point XY);
+
     };
 
 }
