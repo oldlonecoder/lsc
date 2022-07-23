@@ -2,6 +2,9 @@
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
 #include <Windows.h>
+#include <stdlib.h>
+#include <io.h>
+#define write _write
 #elif defined(__linux__)
 #include <sys/ioctl.h>
 #endif // Windows/Linux

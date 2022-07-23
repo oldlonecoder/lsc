@@ -38,8 +38,6 @@ namespace Lsc
             static constexpr uint64_t  Underline = 0x0002000000000000;
             static constexpr uint64_t  Stroke    = 0x0004000000000000;
             static constexpr uint64_t  Blink     = 0x0008000000000000;
-            // ======================================================
-
             Widget::Cell::Type C = 0l;
             Cell() = default;
             Cell(Widget::Cell::Type aCell);
@@ -68,16 +66,34 @@ namespace Lsc
             Cell &ResetAttributes(Widget::Cell::Type Bits);
         };
 
+        //=====  Widget Flags ===================================
+        using WFlags = uint16_t;
+        static constexpr uint16_t WTopLevel = 0x0001;
+        static constexpr uint16_t WFloating = 0x0002;
+        static constexpr uint16_t WChild    = 0x0004;
+        static constexpr uint16_t WParent   = 0x0008;
+        static constexpr uint16_t WCaption  = 0x0010;
+        static constexpr uint16_t WFrame    = 0x0020;
+        static constexpr uint16_t WInput    = 0x0040;
+        //..
+        // 0x1000
+        // ======================================================
         struct IOCON_LIB Flag
         {
             uint16_t TopLevel : 1;
             uint16_t Floating : 1;
-            uint16_t unused : 14;
+            uint16_t Child : 1;
+            uint16_t Parent : 1;
+            uint16_t Caption : 1;
+            uint16_t Frame : 1;
+            uint16_t Input : 1;
+            uint16_t unused : 9;
             //...
         };
 
         Widget() = default;
         Widget(Widget *aParentWidget, Widget::Flag aFlags = {1});
+        Widget(Widget* aParentWidget, Widget::WFlags FlagBits);
         virtual ~Widget();
         //...
         Expect<> SetParent(Widget *aParent);

@@ -11,6 +11,24 @@ namespace Lsc
             SetParent(aParentWidget);
     }
 
+    Widget::Widget(Widget* aParentWidget, Widget::WFlags FlagBits)
+    {
+        if (aParentWidget)
+            SetParent(aParentWidget);
+        _mFlags.Top =
+        {
+            (uint16_t)(Widget::WTopLevel & FlagBits),
+            (uint16_t)(Widget::WFloating & FlagBits),
+            (uint16_t)(Widget::WChild    & FlagBits),
+            (uint16_t)(Widget::WParent   & FlagBits),
+            (uint16_t)(Widget::WCaption  & FlagBits),
+            (uint16_t)(Widget::WFrame    & FlagBits),
+            (uint16_t)(Widget::WInput    & FlagBits),
+            0,0,0,0,0,0,0
+        };
+
+    }
+
     Widget::~Widget()
     {
 

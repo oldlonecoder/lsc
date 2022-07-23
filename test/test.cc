@@ -95,7 +95,8 @@ namespace Lsc
 
     Expect<> Test::TestWidget()
     {
-        Widget* W = new Widget(nullptr);
+        Widget* W = new Widget(nullptr,Widget::WTopLevel|Widget::WFloating);
+
         W->SetGeometry({ 10,3 }, { { 40,10 } });
         Console::RenderWidget(W);
         // ...
