@@ -171,7 +171,7 @@ namespace Lsc
         if (!_mR)
             throw Message::Fatal(SourceLocation) << Message::Code::NullPtr << " Cannot allocate Internal backbufffer memory on invalid geometry";
 
-        if (_mFlags.TopLevel)
+        if (_mFlags.Floating)
         {
             auto Count = _mR.Width() * _mR.Height();
             _mpBackBuffer = new Cell::Type[Count + _mR.Width()];

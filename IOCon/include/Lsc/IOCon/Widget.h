@@ -66,7 +66,8 @@ namespace Lsc
         struct IOCON_LIB Flag
         {
             uint16_t TopLevel : 1;
-            uint16_t unused : 15;
+            uint16_t Floating : 1;
+            uint16_t unused : 14;
             //...
         };
 
