@@ -16,6 +16,15 @@ namespace Lsc
         return *this;
     }
 
+    Painter::Painter(Widget* aUsrWidget):UserWidget(aUsrWidget)
+    {
+        UserClient.Assign(0, 0, UserWidget->Width(), UserWidget->Height());
+        Pen.SetAttribute(UserWidget->Attributes().C);
+        Pen << 0x20;
+        Cursor = { 0,0 };
+    }
+
+
     void Painter::PutWChar(uint16_t WChar)
     {
         Pen.C = (Pen.C & ~Widget::Cell::CharMask) | WChar;
@@ -38,7 +47,7 @@ namespace Lsc
 
     void Painter::Clear(Color::Type aBg, Color::Type aFg, uint16_t aChar)
     {
-        Widget::Cell
+        
     }
     void Painter::SetFg(Color::Type aFg)
     {

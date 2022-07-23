@@ -17,6 +17,13 @@ namespace Lsc
         Point Cursor{0, 0};
 
         Painter &Goto(Point Pt);
+        Painter() = default;
+        Painter(Widget* aUsrWidget);
+        
+        ~Painter() = default;
+
+        Expect<> Update();
+
         void PutWChar(uint16_t WChar);
         void PutC(char C);
         void PutString(const String &Str);

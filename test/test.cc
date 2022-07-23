@@ -4,6 +4,7 @@
 
 #include "test.h"
 #include <Lsc/IOString/String.h>
+#include <Lsc/IOCon/Painter.h>
 
 namespace Lsc
 {
@@ -96,8 +97,13 @@ namespace Lsc
     Expect<> Test::TestWidget()
     {
         Widget* W = new Widget(nullptr,Widget::WTopLevel|Widget::WFloating);
-
         W->SetGeometry({ 10,3 }, { { 40,10 } });
+        W->Attributes().SetColor({Color::DarkBlue,Color::White }) << 0x20;
+        Painter Pen{ W };
+
+        Pen.Goto({ 2,2 });
+        Pen.PutC('A');
+
         Console::RenderWidget(W);
         // ...
 

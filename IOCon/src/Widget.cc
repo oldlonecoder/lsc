@@ -1,4 +1,5 @@
 #include <Lsc/IOCon/Widget.h>
+#include <Lsc/IOCon/IOCon.h>
 
 namespace Lsc
 {
@@ -165,6 +166,12 @@ namespace Lsc
         for (uint64_t x = 0l; x < Count; x++)
             *B++ = C.C;
 
+        return Message::Code::Ok;
+    }
+
+    Expect<> Widget::Update()
+    {
+        Console::RenderWidget(this);
         return Message::Code::Ok;
     }
 
