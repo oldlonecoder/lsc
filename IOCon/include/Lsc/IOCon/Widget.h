@@ -78,21 +78,9 @@ namespace Lsc
         //..
         // 0x1000
         // ======================================================
-        struct IOCON_LIB Flag
-        {
-            uint16_t TopLevel : 1;
-            uint16_t Floating : 1;
-            uint16_t Child : 1;
-            uint16_t Parent : 1;
-            uint16_t Caption : 1;
-            uint16_t Frame : 1;
-            uint16_t Input : 1;
-            uint16_t unused : 9;
-            //...
-        };
 
         Widget() = default;
-        Widget(Widget *aParentWidget, Widget::Flag aFlags = {1});
+        
         Widget(Widget* aParentWidget, Widget::WFlags FlagBits);
         virtual ~Widget();
         //...
@@ -108,7 +96,7 @@ namespace Lsc
 
         virtual Expect<> SetGeometry(Point aPt, Size aSz);
         virtual Expect<> Clear();
-        bool TopLevel() { return _mFlags.TopLevel == 1; }
+        bool TopLevel() { return _mFlags & Widget::WTopLevel; }
 
         /// <summary>
         /// For now assume everything is valid...
@@ -128,7 +116,7 @@ namespace Lsc
     private:
         friend class Console;
         Cell::Type *_mpBackBuffer = nullptr; ///< OWned and managed by Toplevel Widgets
-        Flag _mFlags = {0};
+        WFlags _mFlags = 0;
         Widget::List _mChildren;
         static Widget::List _mpsTheWidgetsGarbage;
         static int EmptyGarbage();

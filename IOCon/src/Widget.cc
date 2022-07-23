@@ -5,28 +5,12 @@ namespace Lsc
 
     Widget::List Widget::_mpsTheWidgetsGarbage;
 
-    Widget::Widget(Widget *aParentWidget, Widget::Flag aFlags) : _mpParent(aParentWidget), _mFlags(aFlags)
-    {
-        if (aParentWidget)
-            SetParent(aParentWidget);
-    }
 
     Widget::Widget(Widget* aParentWidget, Widget::WFlags FlagBits)
     {
         if (aParentWidget)
             SetParent(aParentWidget);
-        _mFlags.Top =
-        {
-            (uint16_t)(Widget::WTopLevel & FlagBits),
-            (uint16_t)(Widget::WFloating & FlagBits),
-            (uint16_t)(Widget::WChild    & FlagBits),
-            (uint16_t)(Widget::WParent   & FlagBits),
-            (uint16_t)(Widget::WCaption  & FlagBits),
-            (uint16_t)(Widget::WFrame    & FlagBits),
-            (uint16_t)(Widget::WInput    & FlagBits),
-            0,0,0,0,0,0,0
-        };
-
+        _mFlags = FlagBits;
     }
 
     Widget::~Widget()
@@ -189,7 +173,7 @@ namespace Lsc
         if (!_mR)
             throw Message::Fatal(SourceLocation) << Message::Code::NullPtr << " Cannot allocate Internal backbufffer memory on invalid geometry";
 
-        if (_mFlags.Floating)
+        if (_mFlags & Widget::WFloating)
         {
             auto Count = _mR.Width() * _mR.Height();
             _mpBackBuffer = new Cell::Type[Count + _mR.Width()];
