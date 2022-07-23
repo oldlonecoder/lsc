@@ -33,7 +33,12 @@ namespace Lsc
             static constexpr int FGShift = 0x10;
             static constexpr int BGShift = 0x20;
             static constexpr int ATShift = 0x40;
-            // =====================================================
+            // ==================Attributes==========================
+            static constexpr uint64_t  Glyph     = 0x0001000000000000;
+            static constexpr uint64_t  Underline = 0x0002000000000000;
+            static constexpr uint64_t  Stroke    = 0x0004000000000000;
+            static constexpr uint64_t  Blink     = 0x0008000000000000;
+            // ======================================================
 
             Widget::Cell::Type C = 0l;
             Cell() = default;

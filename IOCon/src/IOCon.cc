@@ -12,6 +12,12 @@
 namespace Lsc
 {
 
+
+    Console _iConsole;
+
+
+    Console::Console() : _mTerminal(_iConsole){}
+
     Expect<> Console::GetScreenSize()
     {
         int w, h;
@@ -29,13 +35,20 @@ namespace Lsc
 
     Expect<> Console::Init()
     {
-        auto R = GetScreenSize();
+
+        auto R = _iConsole.GetScreenSize();
         if (!R)
             return Message::Fatal(SourceLocation) << Message::Code::Rejected << " Getting screen/console dimensions...";
         //... To be continued
 
         return Message::Code::Implement;
     }
+
+    Console &Console::Instance()
+    {
+        return _iConsole;
+    }
+
 
     int Console::Terminate()
     {
@@ -68,21 +81,21 @@ namespace Lsc
         Widget::Cell::Type *C = W->PeekXY({0, LineNum});
         Widget::Cell::Type *P = C;
         Widget::Cell Cell{*C};
-        std::cout << Color::AnsiBack(Cell.Bg()) << Color::Ansi(Cell.Fg());
+        _iConsole << Color::AnsiBack(Cell.Bg()) << Color::Ansi(Cell.Fg());
         Widget::Cell PCell{*P};
         for (int X = 1; X < W->_mR.Width(); X++)
         {
             PCell.C = *P;
             Cell.C = *C;
             if (PCell.Bg() != Cell.Bg())
-                std::cout << Color::AnsiBack(Cell.Bg());
+                _iConsole << Color::AnsiBack(Cell.Bg());
             if (PCell.Fg() != Cell.Fg())
-                std::cout << Color::Ansi(Cell.Fg());
-            std::cout << (char)Cell.Char();
+                _iConsole << Color::Ansi(Cell.Fg());
+            _iConsole << (char)Cell.Char();
             P = C++;
         }
-        std::cout << Color::Ansi(Color::Reset);
-        std::flush(std::cout);
+        _iConsole << Color::Ansi(Color::Reset);
+        //std::flush(std::cout);
         return Message::Code::Accepted;
     }
 
@@ -93,4 +106,16 @@ namespace Lsc
         return Message::Code::Accepted;
     }
 
+    Console &Console::operator<<(std::string_view aStr)
+    {
+        write(1,aStr.data(), aStr.length());
+        return *this;
+
+    }
+
+    Console &Console::operator<<(char C)
+    {
+        write(1,&C,1);
+        return *this;
+    }
 }

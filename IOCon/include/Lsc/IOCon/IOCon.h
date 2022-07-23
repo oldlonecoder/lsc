@@ -24,10 +24,12 @@ namespace Lsc
         Size _mWh;
         Expect<> GetScreenSize();
         Widget::List _mTopLevels;
-
+        Console& _mTerminal;
     public:
         //...
-        Expect<> Init();
+        Console();
+        ~Console() = default;
+        static Expect<> Init();
         int Width() const { return _mWh.WH.X; }
         int Height() const { return _mWh.WH.Y; }
         Size Dimensions() const { return _mWh; }
@@ -35,7 +37,9 @@ namespace Lsc
         static Expect<> RenderWidget(Widget* W);
         static Expect<> RenderScanLine(Widget* W, int LineNum);
         static Expect<> GotoXY(Point XY);
-
+        static Console& Instance();
+        Console& operator << (std::string_view aStr);
+        Console &operator<<(char C);
     };
 
 }

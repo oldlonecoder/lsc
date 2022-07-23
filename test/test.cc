@@ -56,14 +56,15 @@ namespace Lsc
 
     Expect<> Test::TestIOCon()
     {
-        Console Con;
-        auto R = Con.Init();
+        auto R = Console::Init();
+        Console& ConIO = Console::Instance();
+
         std::cout << " Console.Init : " << Message::CodeText(*R) << "; \n";
         String Str;
-        Str << " This terminal dimensions: " << Color::Lime << Con.Width() << Color::Reset << "x" << Color::Lime << Con.Height() << Color::Reset << '\n';
+        Str << " This terminal dimensions: " << Color::Lime << ConIO.Width() << Color::Reset << "x" << Color::Lime << ConIO.Height() << Color::Reset << '\n';
         std::cout << Str();
         Str = "Test Size values:";
-        Size S = Con.Dimensions();
+        Size S = ConIO.Dimensions();
         Str << S.ToString() << Color::Reset;
         std::cout << Str() << '\n';
 
@@ -88,7 +89,7 @@ namespace Lsc
         String Str = "Bits: [%08b]";
         Str << Cell.C;
         Message::Output() << Str();
-        Message::Output() << " To be continued ( Fg() & Bg() )";
+        Message::Output() << " To be continued (begin implement Painter class) )";
         return Message::Code::Ok;
     }
 
