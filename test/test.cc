@@ -6,6 +6,7 @@
 #include <Lsc/IOString/String.h>
 #include <Lsc/IOCon/Painter.h>
 
+
 namespace Lsc
 {
 
@@ -99,12 +100,12 @@ namespace Lsc
         Widget* W = new Widget(nullptr,Widget::WTopLevel|Widget::WFloating);
         W->SetGeometry({ 10,3 }, { { 40,10 } });
         W->Attributes().SetColor({Color::DarkBlue,Color::White }) << 0x20;
+        Console::RenderWidget(W);
         Painter Pen{ W };
-
+        
         Pen.Goto({ 2,2 });
         Pen.PutC('A');
-
-        Console::RenderWidget(W);
+        Pen.Update();
         // ...
 
         Widget::Dispose(W);

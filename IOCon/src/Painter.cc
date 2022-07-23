@@ -25,6 +25,12 @@ namespace Lsc
     }
 
 
+    Expect<> Painter::Update()
+    {
+        UserWidget->Update();
+        return Message::Code::Ok;
+    }
+
     void Painter::PutWChar(uint16_t WChar)
     {
         Pen.C = (Pen.C & ~Widget::Cell::CharMask) | WChar;

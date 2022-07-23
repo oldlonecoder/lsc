@@ -43,6 +43,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\Lsc\IOCon\Geometry.h" />
+    <None Include="include\Lsc\IOCon\Geometry.h">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
