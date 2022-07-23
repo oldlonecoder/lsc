@@ -104,7 +104,7 @@ namespace Lsc
         Painter Pen{ W };
         
         Pen.Goto({ 2,2 });
-        Pen.PutC('A');
+        Pen.PutString("Test.App \\O/");
         Pen.Update();
         // ...
 
