@@ -25,11 +25,11 @@ namespace Lsc
 
         Expect<> execute();
 
-        [[nodiscard]] bool HasArgs() const;
-        [[nodiscard]] Expect<> InitArguments();
-        [[nodiscard]] Expect<> TestIOCon();
-        [[nodiscard]] Expect<> TestWidgetCellColours();
-        [[nodiscard]] Expect<> TestWidget();
+        [[maybe_unused]] bool HasArgs() const;
+        [[maybe_unused]] Expect<> InitArguments();
+        [[maybe_unused]] Expect<> TestIOCon();
+        [[maybe_unused]] Expect<> TestWidgetCellColours();
+        [[maybe_unused]] Expect<> TestWidget();
 
     };
 
