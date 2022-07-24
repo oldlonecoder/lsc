@@ -35,10 +35,8 @@ namespace Lsc
                 Message::Output() << Color::Aqua << "Arg #" << Color::White << i << ": " << Color::Yellow << argv[i] << Color::Reset;
         }
         else
-            return Message::Error() << Message::Code::Expected << " Arguments to the program";
+            Message::Warning() << Message::Code::Expected << " Arguments to the program. Continuing with the program...";
 
-        TestIOCon();
-        TestWidgetCellColours();
         TestWidget();
         return Message::Code::Accepted;
     }
@@ -56,49 +54,10 @@ namespace Lsc
         return Message::Code::Accepted;
     }
 
-    Expect<> Test::TestIOCon()
-    {
-        auto R = Console::Init();
-        Console& ConIO = Console::Instance();
-
-        std::cout << " Console.Init : " << Message::CodeText(*R) << "; \n";
-        String Str;
-        Str << " This terminal dimensions: " << Color::Lime << ConIO.Width() << Color::Reset << "x" << Color::Lime << ConIO.Height() << Color::Reset << '\n';
-        std::cout << Str();
-        Str = "Test Size values:";
-        Size S = ConIO.Dimensions();
-        Str << S.ToString() << Color::Reset;
-        std::cout << Str() << '\n';
-
-        Str = "[%08b]";
-        Str << 0x20;
-        Message::Debug(SourceLocation) << Color::White << "0x20:  " << Str() << " ;";
-        Str = "Cell: [%08b]";
-        Widget::Cell C{0x20};
-        Str << C.C;
-        Message::Debug(SourceLocation) << Color::White << Str() << " ;";
-        return Message::Code::Ok;
-    }
-
-    Expect<> Test::TestWidgetCellColours()
-    {
-        Message::Debug(SourceLocation) << " Testing Cell contents bits:";
-
-        Widget::Cell Cell{0x20};
-        Cell.SetColor({Color::BlueViolet,Color::LightCyan3}) << 'A';
-        Message::Output() << "Cell Attributes:" << Color::BlueViolet
-                          << " BlueViolet " << Color::Reset << Color::BlueViolet << " Bg: " << Color::AnsiBack(Color::Cyan3) << "  Cyan3  " << Color::Reset << ':';
-        String Str = "Bits: [%08b]";
-        Str << Cell.C;
-        Message::Output() << Str();
-        Message::Output() << " To be continued (begin implement Painter class) )";
-        return Message::Code::Ok;
-    }
-
     Expect<> Test::TestWidget()
     {
         Widget* W = new Widget(nullptr,Widget::WTopLevel|Widget::WFloating);
-        W->SetGeometry({ 10,3 }, { { 40,10 } });
+        W->SetGeometry({ 10,3 }, { { 60,20 } });
         W->Attributes().SetColor({Color::DarkBlue,Color::White }) << 0x20;
         Console::RenderWidget(W);
         Painter Pen{ W };
