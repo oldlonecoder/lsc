@@ -63,7 +63,7 @@ namespace Lsc
         Painter Pen{ W };
         
         Pen.Goto({ 2,2 });
-        Pen.PutString("Test.App \\O/");
+        Pen.PutString("Test.App \\O/ <Fg:Lime; Bg:DarkBlue>  <icon: Home> Lime On DarkBlue ");
         Pen.Update();
         // ...
 
